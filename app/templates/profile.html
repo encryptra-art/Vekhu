@@ -5,25 +5,86 @@
 {% block canonical_url %}https://vekhu.com/profile/{{ profile.slug }}{% endblock %}
 
 {% block extra_head %}
-<!-- Google Rich Snippet JSON-LD Structured Data -->
+<!-- Google Rich Snippet JSON-LD Structured Data: Person + AggregateRating + Reviews + Breadcrumbs -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": {{ profile.name|tojson }},
-  "jobTitle": {{ profile.title|tojson }},
-  "description": {{ profile.bio|tojson }},
-  "image": {{ profile.avatar_url|tojson }},
-  "url": "https://vekhu.com/profile/{{ profile.slug }}",
-  {% if profile.rating_count > 0 %}
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "{{ '%.1f'|format(profile.average_rating) }}",
-    "reviewCount": "{{ profile.rating_count }}",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
-  {% endif %}
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://vekhu.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Directory",
+          "item": "https://vekhu.com/discover"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ profile.category|tojson }},
+          "item": "https://vekhu.com/discover?category={{ profile.category|urlencode }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": {{ profile.name|tojson }},
+          "item": "https://vekhu.com/profile/{{ profile.slug }}"
+        }
+      ]
+    },
+    {
+      "@type": "ItemPage",
+      "@id": "https://vekhu.com/profile/{{ profile.slug }}#webpage",
+      "url": "https://vekhu.com/profile/{{ profile.slug }}",
+      "name": "{{ profile.name }} Reviews & Perception Score | VEKHU",
+      "description": "Read community reviews, 5-star distribution curve, and collective perception of {{ profile.name }} ({{ profile.title }}) on VEKHU.",
+      "mainEntity": {
+        "@type": "Person",
+        "@id": "https://vekhu.com/profile/{{ profile.slug }}#person",
+        "name": {{ profile.name|tojson }},
+        "jobTitle": {{ profile.title|tojson }},
+        "description": {{ profile.bio|tojson }},
+        "image": {{ profile.avatar_url|tojson }},
+        "url": "https://vekhu.com/profile/{{ profile.slug }}",
+        {% if profile.rating_count > 0 %}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "{{ '%.1f'|format(profile.average_rating) }}",
+          "reviewCount": "{{ profile.rating_count }}",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "review": [
+          {% for r in profile.reviews %}
+          {
+            "@type": "Review",
+            "name": {{ r.headline|tojson }},
+            "reviewBody": {{ r.content|tojson }},
+            "datePublished": "{{ r.created_at[:10] }}",
+            "author": {
+              "@type": "Person",
+              "name": {{ r.author_alias|tojson }}
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "{{ r.rating }}",
+              "bestRating": "5",
+              "worstRating": "1"
+            }
+          }{% if not loop.last %},{% endif %}
+          {% endfor %}
+        ]
+        {% endif %}
+      }
+    }
+  ]
 }
 </script>
 {% endblock %}

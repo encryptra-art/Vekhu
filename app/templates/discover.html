@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Directory & Discovery — VEKHU Perception Index{% endblock %}
+{% block title %}Explore Public Figures, Creators & Tech Founders | VEKHU Index{% endblock %}
+{% block meta_desc %}Browse the complete public perception directory of founders, thinkers, creators, and media figures. Filter by industry and examine real-time sentiment distribution curves.{% endblock %}
+{% block canonical_url %}https://vekhu.com/discover{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "VEKHU Directory of Public Figures",
+  "url": "https://vekhu.com/discover",
+  "description": "Comprehensive index of public-facing founders, creators, thinkers, and cultural figures with community review scores."
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-6 py-12">

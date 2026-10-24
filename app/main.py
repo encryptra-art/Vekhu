@@ -36,32 +36,106 @@ templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 
 # ============================================================================
-# SEO & SITEMAP ENDPOINTS (Google Crawlers & Indexation)
+# SEO, SITEMAP & RSS FEED ENDPOINTS (Google Crawlers & Rich Indexing)
 # ============================================================================
 
 @app.get("/robots.txt", response_class=Response)
 async def robots_txt():
-    content = "User-agent: *\nAllow: /\nSitemap: https://vekhu.com/sitemap.xml\n"
-    return Response(content=content, media_type="text/plain")
+    """Optimized robots.txt allowing public indexation while protecting admin."""
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /api/\n"
+        "Allow: /api/profiles\n"
+        "Allow: /api/reviews\n"
+        "\n"
+        "Sitemap: https://vekhu.com/sitemap.xml\n"
+        "Host: https://vekhu.com\n"
+    )
+    return Response(content=content, media_type="text/plain; charset=utf-8")
 
 @app.get("/sitemap.xml", response_class=Response)
 async def sitemap_xml():
+    """Dynamic XML Sitemap with priorities and freshness for Google Search Console."""
     profiles = await crud.get_all_profiles()
-    urls = [
-        "https://vekhu.com/",
-        "https://vekhu.com/discover",
-        "https://vekhu.com/guidelines",
-        "https://vekhu.com/create"
-    ]
-    for p in profiles:
-        urls.append(f"https://vekhu.com/profile/{p['slug']}")
+    now_date = "2026-10-24"
 
-    xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for u in urls:
-        xml_lines.append(f"  <url><loc>{u}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>")
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+        ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+        '  <url>',
+        '    <loc>https://vekhu.com/</loc>',
+        f'    <lastmod>{now_date}</lastmod>',
+        '    <changefreq>hourly</changefreq>',
+        '    <priority>1.0</priority>',
+        '  </url>',
+        '  <url>',
+        '    <loc>https://vekhu.com/discover</loc>',
+        f'    <lastmod>{now_date}</lastmod>',
+        '    <changefreq>daily</changefreq>',
+        '    <priority>0.9</priority>',
+        '  </url>',
+        '  <url>',
+        '    <loc>https://vekhu.com/create</loc>',
+        f'    <lastmod>{now_date}</lastmod>',
+        '    <changefreq>monthly</changefreq>',
+        '    <priority>0.7</priority>',
+        '  </url>',
+        '  <url>',
+        '    <loc>https://vekhu.com/guidelines</loc>',
+        f'    <lastmod>{now_date}</lastmod>',
+        '    <changefreq>monthly</changefreq>',
+        '    <priority>0.6</priority>',
+        '  </url>'
+    ]
+
+    for p in profiles:
+        avatar = p.get("avatar_url", "")
+        name = p.get("name", "")
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>https://vekhu.com/profile/{p["slug"]}</loc>')
+        xml_lines.append(f'    <lastmod>{now_date}</lastmod>')
+        xml_lines.append('    <changefreq>daily</changefreq>')
+        xml_lines.append('    <priority>0.95</priority>')
+        if avatar:
+            xml_lines.append('    <image:image>')
+            xml_lines.append(f'      <image:loc>{avatar}</image:loc>')
+            xml_lines.append(f'      <image:title>{name} - Public Perception &amp; Reviews</image:title>')
+            xml_lines.append('    </image:image>')
+        xml_lines.append('  </url>')
+
     xml_lines.append('</urlset>')
+    return Response(content="\n".join(xml_lines), media_type="application/xml; charset=utf-8")
+
+@app.get("/feed.xml", response_class=Response)
+async def rss_feed():
+    """RSS 2.0 Feed for search engines, web crawlers, and content discovery."""
+    profiles = await crud.get_all_profiles(sort_by="newest")
     
-    return Response(content="\n".join(xml_lines), media_type="application/xml")
+    rss = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+        '<channel>',
+        '  <title>VEKHU — Public Perception Index</title>',
+        '  <link>https://vekhu.com</link>',
+        '  <description>Real-time public sentiment, reviews, and 5-star distribution curves for founders, creators, and cultural figures.</description>',
+        '  <language>en-us</language>',
+        '  <atom:link href="https://vekhu.com/feed.xml" rel="self" type="application/rss+xml" />'
+    ]
+
+    for p in profiles[:20]:
+        rss.append('  <item>')
+        rss.append(f'    <title>{p["name"]} ({p["title"]}) - Perception Dossier</title>')
+        rss.append(f'    <link>https://vekhu.com/profile/{p["slug"]}</link>')
+        rss.append(f'    <description><![CDATA[{p["bio"]} Rated {p["average_rating"]}/5 based on {p["rating_count"]} perspectives.]]></description>')
+        rss.append(f'    <guid>https://vekhu.com/profile/{p["slug"]}</guid>')
+        rss.append('  </item>')
+
+    rss.append('</channel>')
+    rss.append('</rss>')
+    return Response(content="\n".join(rss), media_type="application/rss+xml; charset=utf-8")
 
 
 # ============================================================================

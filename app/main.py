@@ -57,53 +57,39 @@ async def robots_txt():
 
 @app.get("/sitemap.xml", response_class=Response)
 async def sitemap_xml():
-    """Dynamic XML Sitemap with priorities and freshness for Google Search Console."""
+    """Standard, 100% compliant XML Sitemap for Google Search Console."""
     profiles = await crud.get_all_profiles()
-    now_date = "2026-10-24"
 
     xml_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
-        ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
         '  <url>',
         '    <loc>https://vekhu.com/</loc>',
-        f'    <lastmod>{now_date}</lastmod>',
         '    <changefreq>hourly</changefreq>',
         '    <priority>1.0</priority>',
         '  </url>',
         '  <url>',
         '    <loc>https://vekhu.com/discover</loc>',
-        f'    <lastmod>{now_date}</lastmod>',
         '    <changefreq>daily</changefreq>',
         '    <priority>0.9</priority>',
         '  </url>',
         '  <url>',
         '    <loc>https://vekhu.com/create</loc>',
-        f'    <lastmod>{now_date}</lastmod>',
         '    <changefreq>monthly</changefreq>',
         '    <priority>0.7</priority>',
         '  </url>',
         '  <url>',
         '    <loc>https://vekhu.com/guidelines</loc>',
-        f'    <lastmod>{now_date}</lastmod>',
         '    <changefreq>monthly</changefreq>',
         '    <priority>0.6</priority>',
         '  </url>'
     ]
 
     for p in profiles:
-        avatar = p.get("avatar_url", "")
-        name = p.get("name", "")
         xml_lines.append('  <url>')
         xml_lines.append(f'    <loc>https://vekhu.com/profile/{p["slug"]}</loc>')
-        xml_lines.append(f'    <lastmod>{now_date}</lastmod>')
         xml_lines.append('    <changefreq>daily</changefreq>')
-        xml_lines.append('    <priority>0.95</priority>')
-        if avatar:
-            xml_lines.append('    <image:image>')
-            xml_lines.append(f'      <image:loc>{avatar}</image:loc>')
-            xml_lines.append(f'      <image:title>{name} - Public Perception &amp; Reviews</image:title>')
-            xml_lines.append('    </image:image>')
+        xml_lines.append('    <priority>0.9</priority>')
         xml_lines.append('  </url>')
 
     xml_lines.append('</urlset>')

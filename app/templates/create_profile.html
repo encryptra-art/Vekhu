@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Add Public Figure — VEKHU Perception Index{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-6 py-12">
+
+  <div class="max-w-2xl mb-12 space-y-3">
+    <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-solar">
+      <span>Open Profile Creation</span>
+      <span>•</span>
+      <span>Community Indexed</span>
+    </div>
+    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-charcoal">
+      Add a Public Figure to VEKHU
+    </h1>
+    <p class="text-mineral text-base leading-relaxed">
+      Expand the perception ledger. Anyone can add an individual who possesses an active public footprint in culture, technology, media, or civic discourse.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    
+    <!-- Left Column: Creation Form (7 cols) -->
+    <div class="lg:col-span-7">
+      <div class="tactile-card p-8 md:p-10 bg-white space-y-6">
+        
+        <!-- Public Figure Doctrine Notice -->
+        <div class="bg-sand/70 p-5 rounded-2xl border border-charcoal/5 flex items-start gap-4">
+          <div class="w-8 h-8 rounded-full bg-solar-soft text-solar flex items-center justify-center font-bold text-sm flex-shrink-0">
+            ℹ
+          </div>
+          <div class="text-xs text-mineral leading-relaxed">
+            <span class="font-bold text-charcoal block mb-0.5">Strict Public Figure Boundary</span>
+            Do not submit private individuals, minors, coworkers, or personal acquaintances. Profiles for non-public persons are removed and subject to IP bans.
+          </div>
+        </div>
+
+        <form id="create-profile-form" onsubmit="handleCreateProfile(event)" class="space-y-6">
+          
+          <!-- Name -->
+          <div>
+            <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+              Full Public Name <span class="text-solar">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="name" 
+              id="input-name"
+              required 
+              minlength="2" 
+              maxlength="100"
+              value="{{ request.query_params.get('name', '') }}"
+              placeholder="E.g. Jensen Huang, Rick Rubin, Simone Giertz..." 
+              class="pill-input text-sm"
+              oninput="updatePreview()"
+            >
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+              Primary Role & Context <span class="text-solar">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="title" 
+              id="input-title"
+              required 
+              minlength="3" 
+              maxlength="120"
+              placeholder="E.g. CEO of NVIDIA, Music Producer & Author, Inventor & Creator..." 
+              class="pill-input text-sm"
+              oninput="updatePreview()"
+            >
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+              Category <span class="text-solar">*</span>
+            </label>
+            <select name="category" id="input-category" required class="pill-input text-sm" onchange="updatePreview()">
+              <option value="Tech & Founders">Tech & Founders</option>
+              <option value="Creators & Media">Creators & Media</option>
+              <option value="Thinkers & Authors">Thinkers & Authors</option>
+              <option value="Entertainment">Entertainment & Culture</option>
+            </select>
+          </div>
+
+          <!-- Bio -->
+          <div>
+            <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+              Public Bio & Impact Context <span class="text-solar">*</span>
+            </label>
+            <textarea 
+              name="bio" 
+              id="input-bio"
+              rows="4" 
+              required 
+              minlength="20" 
+              maxlength="1500"
+              placeholder="Summarize their key accomplishments, public influence, and reasons they are a recognized cultural or industry figure..."
+              class="w-full rounded-2xl bg-sand p-4 text-sm border border-charcoal/10 focus:border-solar focus:outline-none"
+              oninput="updatePreview()"
+            ></textarea>
+          </div>
+
+          <!-- Avatar Image URL -->
+          <div>
+            <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+              Portrait / Avatar Image URL (Optional)
+            </label>
+            <input 
+              type="url" 
+              name="avatar_url" 
+              id="input-avatar"
+              placeholder="https://... (Leave blank for default editorial portrait)" 
+              class="pill-input text-sm"
+              oninput="updatePreview()"
+            >
+          </div>
+
+          <!-- External Reference Link -->
+          <div>
+            <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+              Official Reference Link (Wikipedia, Twitter/X, Website)
+            </label>
+            <input 
+              type="url" 
+              name="external_url" 
+              placeholder="https://en.wikipedia.org/wiki/..." 
+              class="pill-input text-sm"
+            >
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4 flex items-center justify-between border-t border-charcoal/5">
+            <span class="text-xs text-mineral">Publishes immediately to the live index</span>
+            <button type="submit" id="submit-btn" class="pill-btn pill-btn-solar text-xs font-semibold py-3.5 px-8">
+              Publish Public Figure →
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Right Column: Live Interactive Card Preview (5 cols) -->
+    <div class="lg:col-span-5 sticky top-28">
+      <div class="space-y-4">
+        <span class="text-xs font-bold uppercase tracking-wider text-mineral">Live Dossier Preview</span>
+        
+        <div class="tactile-card p-8 bg-white space-y-6 shadow-xl border border-charcoal/10">
+          <div class="flex items-start justify-between">
+            <span id="preview-category" class="tag-capsule tag-capsule-solar">Tech & Founders</span>
+            <div class="flex items-center gap-1 text-xs font-bold text-charcoal bg-sand px-2.5 py-1 rounded-full">
+              <span class="text-solar">★</span>
+              <span>New</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-full overflow-hidden bg-sand border-2 border-white shadow flex-shrink-0">
+              <img id="preview-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Avatar preview" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h3 id="preview-name" class="text-2xl font-bold font-display text-charcoal">Public Figure Name</h3>
+              <p id="preview-title" class="text-xs text-mineral mt-0.5">Primary Title & Role</p>
+            </div>
+          </div>
+
+          <p id="preview-bio" class="text-xs text-mineral leading-relaxed line-clamp-3">
+            Public biography and context will appear here as you type. Once published, anyone can record opinions and explore the 5-star distribution curve.
+          </p>
+
+          <div class="pt-4 border-t border-charcoal/5 flex items-center justify-between text-xs text-mineral">
+            <span>0 Recorded Opinions</span>
+            <span class="font-semibold text-charcoal">Ready for ratings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function updatePreview() {
+  const name = document.getElementById('input-name').value.trim() || 'Public Figure Name';
+  const title = document.getElementById('input-title').value.trim() || 'Primary Title & Role';
+  const category = document.getElementById('input-category').value;
+  const bio = document.getElementById('input-bio').value.trim() || 'Public biography and context will appear here as you type.';
+  const avatar = document.getElementById('input-avatar').value.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80';
+
+  document.getElementById('preview-name').textContent = name;
+  document.getElementById('preview-title').textContent = title;
+  document.getElementById('preview-category').textContent = category;
+  document.getElementById('preview-bio').textContent = bio;
+  document.getElementById('preview-avatar').src = avatar;
+}
+
+async function handleCreateProfile(event) {
+  event.preventDefault();
+  const form = event.target;
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Publishing...';
+
+  const payload = {
+    name: form.name.value.trim(),
+    title: form.title.value.trim(),
+    category: form.category.value,
+    bio: form.bio.value.trim(),
+    avatar_url: form.avatar_url.value.trim() || null,
+    external_url: form.external_url.value.trim() || null
+  };
+
+  try {
+    const res = await fetch('/api/profiles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await res.json();
+    if (res.ok && result.success) {
+      showToast('Public figure profile published!', 'success');
+      setTimeout(() => {
+        window.location.href = `/profile/${result.slug}`;
+      }, 700);
+    } else {
+      showToast(result.detail || result.message || 'Error creating profile.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Publish Public Figure →';
+    }
+  } catch (err) {
+    showToast('Network error.', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Publish Public Figure →';
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}VEKHU — See What The World Really Thinks | Public Perception Index{% endblock %}</title>
+  
+  <!-- Primary Meta & SEO Tags -->
+  <meta name="description" content="{% block meta_desc %}VEKHU is the public perception ledger. Discover aggregate sentiment, 5-star distribution curves, and contextual critiques of the minds shaping culture and technology.{% endblock %}">
+  <link rel="canonical" href="{% block canonical_url %}https://vekhu.com/{% endblock %}">
+  
+  <!-- OpenGraph / Social Media Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vekhu.com/">
+  <meta property="og:site_name" content="VEKHU">
+  <meta property="og:title" content="VEKHU — See What The World Really Thinks">
+  <meta property="og:description" content="Discover true public sentiment and 5-star distribution curves for founders, creators, and thinkers.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80">
+
+  <!-- Twitter Meta -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VEKHU — Public Perception Index">
+  <meta name="twitter:description" content="The real-time public sentiment index for cultural, tech, and media personalities.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via official CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bone: '#FAF7F2',
+            sand: '#F2EFE9',
+            stone: '#EBE6DC',
+            charcoal: '#121212',
+            mineral: '#585550',
+            solar: {
+              DEFAULT: '#FF5E1E',
+              hover: '#E44E11',
+              soft: 'rgba(255, 94, 30, 0.12)'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            editorial: ['Newsreader', 'serif'],
+            display: ['"Playfair Display"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Design Tokens & Atmosphere -->
+  <link rel="stylesheet" href="/static/css/custom.css">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-bone text-charcoal min-h-screen flex flex-col relative selection:bg-solar/20 selection:text-charcoal">
+
+  <!-- Ambient glowing spheres mirroring creative north star -->
+  <div class="ambient-sphere ambient-sphere-orange w-[500px] h-[500px] -top-32 -right-32"></div>
+  <div class="ambient-sphere ambient-sphere-sand w-[650px] h-[650px] top-[40%] -left-64"></div>
+
+  <!-- Global Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-bone/85 backdrop-blur-md border-b border-charcoal/5 transition-all">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-full bg-charcoal text-white flex items-center justify-center font-bold tracking-tighter text-sm group-hover:scale-105 transition-transform">
+          V
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-xl tracking-tight text-charcoal">VEKHU</span>
+          <span class="pulse-indicator"></span>
+        </div>
+        <span class="hidden md:inline-block text-xs font-semibold text-mineral tracking-wider uppercase pl-2 border-l border-charcoal/10">
+          Perception Index
+        </span>
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-mineral">
+        <a href="/discover" class="hover:text-charcoal transition-colors {% if active_page == 'discover' %}text-charcoal font-semibold{% endif %}">
+          Explore Figures
+        </a>
+        <a href="/create" class="hover:text-charcoal transition-colors {% if active_page == 'create' %}text-charcoal font-semibold{% endif %}">
+          + Add Public Figure
+        </a>
+        <a href="/guidelines" class="hover:text-charcoal transition-colors {% if active_page == 'guidelines' %}text-charcoal font-semibold{% endif %}">
+          Integrity & Policy
+        </a>
+      </nav>
+
+      <!-- Action Area -->
+      <div class="flex items-center gap-3">
+        <a href="/admin" class="text-xs font-medium text-mineral hover:text-charcoal px-3 py-1.5 rounded-full hover:bg-sand transition-colors border border-charcoal/5 hidden sm:inline-flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Moderation
+        </a>
+        <a href="/discover" class="pill-btn pill-btn-solar text-xs md:text-sm font-medium">
+          Rate a Figure
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="flex-grow z-10">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Editorial Platform Footer -->
+  <footer class="border-t border-charcoal/10 bg-sand/60 backdrop-blur-sm mt-24 py-16 text-mineral z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-xl tracking-tight text-charcoal">VEKHU</span>
+            <span class="pulse-indicator"></span>
+          </div>
+          <p class="text-sm leading-relaxed max-w-md">
+            The real-time public perception index. See what the world really thinks about the figures who shape contemporary technology, culture, and media.
+          </p>
+          <div class="text-xs text-mineral/80 pt-2">
+            Independent, community-driven, and non-corruptible. Scores cannot be purchased or altered.
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-charcoal uppercase tracking-wider mb-4">Navigation</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/discover" class="hover:text-charcoal transition-colors">Directory of Figures</a></li>
+            <li><a href="/create" class="hover:text-charcoal transition-colors">Add Public Figure</a></li>
+            <li><a href="/guidelines" class="hover:text-charcoal transition-colors">Perception & Review Standards</a></li>
+            <li><a href="/admin" class="hover:text-charcoal transition-colors">Moderation & Transparency</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-charcoal uppercase tracking-wider mb-4">Integrity & Safety</h4>
+          <p class="text-xs leading-relaxed text-mineral mb-3">
+            PULSE applies strictly to public figures. Private individuals and doxxing are strictly prohibited and immediately expunged.
+          </p>
+          <a href="/guidelines" class="text-xs font-semibold text-solar hover:underline inline-flex items-center gap-1">
+            Read Community Guidelines →
+          </a>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-charcoal/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div>© 2026 VEKHU Technologies (vekhu.com). All perspectives represent independent community sentiment.</div>
+        <div class="flex items-center gap-6">
+          <a href="/guidelines#privacy" class="hover:text-charcoal">Privacy & Anonymity</a>
+          <a href="/guidelines#public-doctrine" class="hover:text-charcoal">Public Figure Doctrine</a>
+          <a href="/admin" class="hover:text-charcoal">Admin Portal</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Hub -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Shared Report Modal -->
+  <div id="report-modal" class="fixed inset-0 z-50 modal-overlay hidden flex items-center justify-center p-4">
+    <div class="tactile-card w-full max-w-lg p-8 bg-white relative animate-fade-in">
+      <button onclick="closeModal('report-modal')" class="absolute top-6 right-6 text-mineral hover:text-charcoal p-2 rounded-full hover:bg-sand">
+        ✕
+      </button>
+
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-solar">Integrity Flag</span>
+      </div>
+      <h3 class="text-xl font-bold text-charcoal mb-2">Flag Content for Review</h3>
+      <p class="text-xs text-mineral mb-6">
+        Our moderation team inspects all reported content to enforce our public-figure boundaries and anti-harassment policy.
+      </p>
+
+      <form onsubmit="submitReport(event)" class="space-y-4">
+        <input type="hidden" name="target_type" id="report-target-type" value="profile">
+        <input type="hidden" name="target_id" id="report-target-id" value="0">
+
+        <div>
+          <label class="block text-xs font-semibold text-mineral uppercase tracking-wider mb-2">Flag Reason</label>
+          <select name="reason" required class="pill-input text-sm">
+            <option value="private_individual">Not a Public Figure (Private Individual)</option>
+            <option value="harassment_defamation">Targeted Harassment or Defamation</option>
+            <option value="hate_speech">Hate Speech or Severe Abuse</option>
+            <option value="fabricated_spam">Fabricated Claims / Coordinated Spam</option>
+            <option value="other">Other Policy Violation</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-mineral uppercase tracking-wider mb-2">Context / Details (Optional)</label>
+          <textarea name="details" rows="3" class="w-full rounded-2xl bg-sand p-4 border border-charcoal/10 text-sm focus:border-solar focus:outline-none" placeholder="Provide any links or context to assist the moderation review..."></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3">
+          <button type="button" onclick="closeModal('report-modal')" class="pill-btn pill-btn-outline text-xs">
+            Cancel
+          </button>
+          <button type="submit" class="pill-btn pill-btn-solar text-xs font-semibold">
+            Submit Report
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

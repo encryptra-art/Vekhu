@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Moderation & Integrity Console — PULSE{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-6 py-12">
+
+  <div class="max-w-3xl mb-12 space-y-3">
+    <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-solar">
+      <span class="w-2 h-2 rounded-full bg-solar"></span>
+      <span>Trust & Safety Operations</span>
+    </div>
+    <h1 class="text-4xl font-bold tracking-tight text-charcoal">
+      Moderation & Integrity Console
+    </h1>
+    <p class="text-mineral text-base leading-relaxed">
+      Review flagged content, enforce the Public Figure Boundary, and take rapid action against harassment, doxxing, or fabricated reviews.
+    </p>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+    <div class="tactile-card p-6 bg-white space-y-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-mineral">Total Profiles Indexed</span>
+      <div class="text-3xl font-bold text-charcoal">{{ stats.total_profiles }}</div>
+    </div>
+    <div class="tactile-card p-6 bg-white space-y-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-mineral">Recorded Perspectives</span>
+      <div class="text-3xl font-bold text-charcoal">{{ stats.total_reviews }}</div>
+    </div>
+    <div class="tactile-card p-6 bg-white space-y-2 border-l-4 border-solar">
+      <span class="text-xs font-bold uppercase tracking-wider text-solar">Pending Community Flags</span>
+      <div class="text-3xl font-bold text-charcoal">{{ reports|selectattr('status', 'equalto', 'pending')|list|length }}</div>
+    </div>
+  </div>
+
+  <!-- Flagged Items Queue -->
+  <div class="tactile-card p-8 bg-white space-y-6">
+    <div class="flex items-center justify-between border-b border-charcoal/10 pb-4">
+      <h2 class="text-xl font-bold text-charcoal">Flagged Items Requiring Moderation</h2>
+      <span class="text-xs font-mono text-mineral">{{ reports|length }} Total Reports Logged</span>
+    </div>
+
+    {% if reports and reports|length > 0 %}
+    <div class="space-y-4">
+      {% for report in reports %}
+      <div id="report-row-{{ report.id }}" class="p-6 rounded-2xl bg-sand/60 border border-charcoal/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        
+        <div class="space-y-2 max-w-2xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="tag-capsule {% if report.target_type == 'profile' %}tag-capsule-solar{% else %}bg-charcoal text-white{% endif %} text-[11px]">
+              {{ report.target_type|upper }}
+            </span>
+            <span class="text-xs font-bold text-red-700 bg-red-100 px-2.5 py-0.5 rounded-full">
+              Reason: {{ report.reason|replace('_', ' ')|title }}
+            </span>
+            <span class="text-xs text-mineral">
+              Reported on {{ report.created_at[:16] }}
+            </span>
+          </div>
+
+          <div class="text-sm font-bold text-charcoal">
+            {{ report.target_title }}
+          </div>
+
+          {% if report.target_content %}
+          <blockquote class="text-xs italic text-charcoal/80 bg-white/70 p-3 rounded-xl border border-charcoal/5 line-clamp-2">
+            "{{ report.target_content }}"
+          </blockquote>
+          {% endif %}
+
+          {% if report.details %}
+          <div class="text-xs text-mineral">
+            <span class="font-semibold text-charcoal">Reporter Notes:</span> {{ report.details }}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Moderation Actions -->
+        <div class="flex items-center gap-3 flex-shrink-0">
+          {% if report.status == 'pending' %}
+          <button 
+            onclick="resolveAdminReport({{ report.id }}, 'dismiss')" 
+            class="pill-btn pill-btn-outline text-xs py-2 px-4 hover:bg-white"
+          >
+            Dismiss (No Violation)
+          </button>
+          <button 
+            onclick="resolveAdminReport({{ report.id }}, 'hide')" 
+            class="pill-btn bg-red-600 hover:bg-red-700 text-white text-xs py-2 px-4 font-semibold shadow-sm"
+          >
+            Hide / Expunge Content
+          </button>
+          {% else %}
+          <span class="text-xs font-semibold px-3 py-1 rounded-full {% if 'hidden' in report.status %}bg-red-100 text-red-800{% else %}bg-emerald-100 text-emerald-800{% endif %}">
+            Resolved: {{ report.status|replace('resolved_', '')|title }}
+          </span>
+          {% endif %}
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="p-12 text-center text-mineral text-sm">
+      ✨ All community reports have been resolved. The ledger is clean.
+    </div>
+    {% endif %}
+
+  </div>
+
+</div>
+{% endblock %}

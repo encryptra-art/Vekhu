@@ -1,0 +1,264 @@
+/* ==========================================================================
+   PULSE Design System & Visual Foundation
+   Inspired by architectural, tactile, warm minimalism with solar kinetic accents.
+   ========================================================================== */
+
+:root {
+  --bg-bone: #FAF7F2;
+  --bg-sand: #F2EFE9;
+  --surface-stone: #EBE6DC;
+  --surface-card: #FFFFFF;
+  --border-subtle: rgba(18, 18, 18, 0.08);
+  --border-hover: rgba(18, 18, 18, 0.18);
+  
+  --text-primary: #121212;
+  --text-secondary: #585550;
+  --text-muted: #8A8680;
+  
+  --solar-orange: #FF5E1E;
+  --solar-orange-hover: #E44E11;
+  --solar-orange-soft: rgba(255, 94, 30, 0.12);
+  --solar-glow: 0 12px 36px -6px rgba(255, 94, 30, 0.35);
+
+  --shadow-tactile: 0 20px 40px -15px rgba(0, 0, 0, 0.04), 0 0 1px 1px rgba(0, 0, 0, 0.03);
+  --shadow-floating: 0 25px 50px -12px rgba(18, 18, 18, 0.08);
+  
+  --radius-pill: 9999px;
+  --radius-card: 28px;
+  --radius-sm: 14px;
+}
+
+/* Base resets & typography */
+body {
+  background-color: var(--bg-bone);
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.font-editorial {
+  font-family: 'Newsreader', 'Playfair Display', serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Ambient sculptural orbs mirroring reference image */
+.ambient-sphere {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+  opacity: 0.7;
+}
+
+.ambient-sphere-orange {
+  background: radial-gradient(circle, rgba(255, 94, 30, 0.45) 0%, rgba(255, 140, 60, 0.15) 50%, transparent 80%);
+}
+
+.ambient-sphere-sand {
+  background: radial-gradient(circle, rgba(214, 203, 188, 0.6) 0%, rgba(240, 235, 226, 0.2) 60%, transparent 80%);
+}
+
+/* Floating tactile cards */
+.tactile-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-tactile);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.tactile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-floating);
+  border-color: var(--border-hover);
+}
+
+.tactile-panel-frosted {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-tactile);
+}
+
+/* Dark tactile card (mirroring bottom left of reference) */
+.tactile-card-dark {
+  background: #111111;
+  color: #FAF7F2;
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
+}
+
+/* Pill components */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  padding: 0.65rem 1.4rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.pill-btn-primary {
+  background-color: var(--text-primary);
+  color: #FFFFFF;
+}
+
+.pill-btn-primary:hover {
+  background-color: #262626;
+  transform: translateY(-1px);
+}
+
+.pill-btn-solar {
+  background-color: var(--solar-orange);
+  color: #FFFFFF;
+  box-shadow: var(--solar-glow);
+}
+
+.pill-btn-solar:hover {
+  background-color: var(--solar-orange-hover);
+  transform: translateY(-1px);
+}
+
+.pill-btn-outline {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.pill-btn-outline:hover {
+  background-color: var(--bg-sand);
+  border-color: var(--border-hover);
+}
+
+.pill-input {
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-sand);
+  padding: 0.75rem 1.4rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.pill-input:focus {
+  background-color: #FFFFFF;
+  border-color: var(--solar-orange);
+  box-shadow: 0 0 0 3px var(--solar-orange-soft);
+}
+
+/* Tag capsules */
+.tag-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background-color: var(--bg-sand);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.tag-capsule-solar {
+  background-color: var(--solar-orange-soft);
+  color: var(--solar-orange);
+  border-color: rgba(255, 94, 30, 0.2);
+}
+
+/* Star rating input & display */
+.star-rating-interactive {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.star-rating-interactive svg {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  fill: #D8D4CC;
+  transition: all 0.15s ease;
+}
+
+.star-rating-interactive svg.active,
+.star-rating-interactive svg.hovered {
+  fill: var(--solar-orange);
+  transform: scale(1.1);
+}
+
+/* Distribution curve bar */
+.dist-bar-track {
+  height: 8px;
+  background: var(--bg-sand);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.dist-bar-fill {
+  height: 100%;
+  background: var(--solar-orange);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Solar pulsing dot */
+.pulse-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--solar-orange);
+  display: inline-block;
+  position: relative;
+}
+
+.pulse-indicator::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--solar-orange);
+  opacity: 0.4;
+  animation: pulse-ring 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.5); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Modal styling */
+.modal-overlay {
+  background: rgba(18, 18, 18, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-bone);
+}
+::-webkit-scrollbar-thumb {
+  background: #D5D0C6;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8B2A6;
+}

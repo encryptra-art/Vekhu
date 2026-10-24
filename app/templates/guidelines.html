@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Platform Integrity & Community Guidelines — VEKHU{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-16 space-y-12">
+
+  <div class="space-y-4">
+    <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-solar">
+      <span>Trust, Safety & Governance</span>
+    </div>
+    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-charcoal">
+      Community Standards & Public Figure Doctrine
+    </h1>
+    <p class="text-mineral text-base leading-relaxed">
+      VEKHU is an editorial index designed to measure, structure, and understand collective public sentiment around cultural, technological, and media figures. These policies define how we protect both honest critique and personal safety.
+    </p>
+  </div>
+
+  <div class="tactile-card p-8 sm:p-10 bg-white space-y-8 divide-y divide-charcoal/10">
+    
+    <!-- Section 1 -->
+    <div class="space-y-4 pt-2">
+      <h2 class="text-2xl font-bold text-charcoal">1. The Public Figure Boundary</h2>
+      <p class="text-sm text-mineral leading-relaxed">
+        PULSE indexes individuals who actively participate in public discourse, run public-facing institutions, create public media, or shape cultural and civic ideas.
+      </p>
+      <ul class="list-disc pl-6 text-sm text-mineral space-y-2">
+        <li><strong class="text-charcoal">Eligible Subjects:</strong> Technology founders, recognized creators/streamers, published authors, journalists, public executives, and cultural critics.</li>
+        <li><strong class="text-charcoal">Strictly Prohibited Subjects:</strong> Private citizens, minors under 18, non-public coworkers, personal acquaintances, and local retail employees without a public platform.</li>
+      </ul>
+      <p class="text-xs text-mineral/80 bg-sand p-4 rounded-xl">
+        Any profile created for a private individual is immediately expunged, and the submitting IP is permanently barred from creating profiles.
+      </p>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="space-y-4 pt-8">
+      <h2 class="text-2xl font-bold text-charcoal">2. Honest Critique vs. Harassment & Defamation</h2>
+      <p class="text-sm text-mineral leading-relaxed">
+        We staunchly protect robust, critical, and challenging public opinion. However, we draw a hard line against malicious abuse:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div class="p-4 rounded-xl bg-emerald-50 text-emerald-900 border border-emerald-200">
+          <strong class="block mb-1 font-bold">✓ Permitted Opinions</strong>
+          Critiques of leadership style, product decisions, artistic output, consistency, intellectual honesty, public statements, and business ethics.
+        </div>
+        <div class="p-4 rounded-xl bg-red-50 text-red-900 border border-red-200">
+          <strong class="block mb-1 font-bold">✗ Strictly Prohibited</strong>
+          Doxxing (private phone numbers, home addresses), violent threats, hate speech, allegations of criminal conduct without judicial record, and targeted harassment.
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="space-y-4 pt-8">
+      <h2 class="text-2xl font-bold text-charcoal">3. Anonymity & Anti-Brigading Mechanics</h2>
+      <p class="text-sm text-mineral leading-relaxed">
+        PULSE supports zero-friction anonymous submissions so contributors can speak truth to power without fear of professional or social retaliation.
+      </p>
+      <p class="text-sm text-mineral leading-relaxed">
+        To prevent coordinated review-bombing and bot astroturfing:
+      </p>
+      <ul class="list-disc pl-6 text-sm text-mineral space-y-2">
+        <li>Each submission is linked to a one-way hashed IP address and unique browser session token.</li>
+        <li>Duplicate submissions from the same actor on the same figure are automatically rejected.</li>
+        <li>Spike-detection algorithms flag sudden anomalous surges in 1-star or 5-star votes for moderator inspection.</li>
+      </ul>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="space-y-4 pt-8">
+      <h2 class="text-2xl font-bold text-charcoal">4. Profile Claims, Corrections & Right of Reply</h2>
+      <p class="text-sm text-mineral leading-relaxed">
+        Public figures or their verified representatives may claim their profile badge by contacting <code class="bg-sand px-2 py-1 rounded text-charcoal">claims@pulse.local</code>.
+      </p>
+      <p class="text-sm text-mineral leading-relaxed">
+        Verified figures receive an official badge, the ability to pin a single verified response at the top of their dossier, and direct access to perception analytics over time.
+      </p>
+      <p class="text-xs text-charcoal font-semibold bg-sand/60 p-4 rounded-xl">
+        ⚖ Non-Negotiable Standard: Claimed profiles CANNOT delete legitimate criticism or alter their 5-star distribution curve. Score manipulation cannot be purchased.
+      </p>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
   <link rel="shortcut icon" href="/static/img/favicon.ico">
-  <link rel="apple-touch-icon" href="/static/img/mascot-avatar.png">
+  <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
 
   <!-- Primary Meta & SEO Tags -->
   <meta name="description" content="{% block meta_desc %}VEKHU is the honest community review site. See real ratings and reviews for founders, creators, and public figures.{% endblock %}">
@@ -32,13 +32,13 @@
   <meta property="og:site_name" content="VEKHU">
   <meta property="og:title" content="VEKHU — See What The World Really Thinks">
   <meta property="og:description" content="Discover true public sentiment and 5-star distribution curves for founders, creators, and thinkers.">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:image" content="https://vekhu.com/static/img/logo.png">
 
   <!-- Twitter Meta -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="VEKHU — Public Perception Index">
   <meta name="twitter:description" content="The real-time public sentiment index for cultural, tech, and media personalities.">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80">
+  <meta name="twitter:image" content="https://vekhu.com/static/img/logo.png">
 
   <!-- RSS Feed for Discovery -->
   <link rel="alternate" type="application/rss+xml" title="VEKHU Public Perception Feed" href="https://vekhu.com/feed.xml">
@@ -68,7 +68,7 @@
         "@id": "https://vekhu.com/#organization",
         "name": "VEKHU",
         "url": "https://vekhu.com/",
-        "logo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        "logo": "https://vekhu.com/static/img/logo.png",
         "sameAs": [
           "https://x.com/vekhu"
         ]
@@ -124,11 +124,11 @@
   <header class="sticky top-0 z-40 bg-bone/85 backdrop-blur-md border-b border-charcoal/5 transition-all">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       
-      <!-- Brand Logo with Mascot Avatar -->
+      <!-- Brand Logo with New 3D Squircle Logo -->
       <a href="/" class="flex items-center gap-2.5 group">
         <div class="relative">
-          <img src="/static/img/mascot-avatar.png" alt="Vekhu Mascot" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm group-hover:scale-105 transition-transform bg-sand">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute bottom-0 right-0"></span>
+          <img src="/static/img/logo.png" alt="VEKHU Logo" class="w-10 h-10 rounded-2xl shadow-md group-hover:scale-105 transition-all">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute -bottom-0.5 -right-0.5"></span>
         </div>
         <div class="flex items-center gap-2">
           <span class="font-bold text-xl tracking-tight text-charcoal">VEKHU</span>
@@ -174,7 +174,7 @@
         
         <div class="md:col-span-2 space-y-4">
           <div class="flex items-center gap-3">
-            <img src="/static/img/mascot-avatar.png" alt="Vekhu Mascot" class="w-9 h-9 rounded-full object-cover border border-charcoal/10 shadow-sm bg-white">
+            <img src="/static/img/logo.png" alt="VEKHU Logo" class="w-9 h-9 rounded-xl shadow-md">
             <span class="font-bold text-xl tracking-tight text-charcoal">VEKHU</span>
             <span class="pulse-indicator"></span>
           </div>
@@ -265,6 +265,20 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Floating Free Fire Pet Companion (Interactive on All Pages) -->
+  <div class="floating-pet-companion group" onclick="triggerPetEmote('jump')" title="Click to play with Vekhu!">
+    <div class="relative">
+      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-gradient-to-tr from-purple-700 via-indigo-600 to-amber-500 p-0.5 shadow-xl border-2 border-white group-hover:scale-110 transition-transform">
+        <img src="/static/img/mascot-pet.png" alt="Play with Vekhu" class="w-full h-full object-contain filter drop-shadow">
+      </div>
+      <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-white absolute -bottom-0.5 -right-0.5 animate-pulse"></span>
+    </div>
+    <div class="hidden sm:flex flex-col bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-charcoal/10 shadow-lg text-[11px] font-bold text-charcoal">
+      <span class="text-purple-600 flex items-center gap-1">🐾 Vekhu <span class="text-[9px] bg-purple-100 text-purple-700 px-1 rounded font-black">PET • LVL MAX</span></span>
+      <span class="text-mineral font-normal text-[10px]">Tap to play! ⚡</span>
     </div>
   </div>
 

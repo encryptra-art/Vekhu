@@ -359,3 +359,157 @@ async function resolveAdminReport(reportId, action) {
     showToast("Error processing moderation action.", "error");
   }
 }
+
+// ============================================================================
+// FREE FIRE PET INTERACTIVE COMPANION (Vekhu Pet System)
+// Energetic Emotes, Sound Chimes (Web Audio), Particles, & Mouse Tracking
+// ============================================================================
+
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playPetSound(type) {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    
+    if (type === 'jump') {
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+        gain.gain.setValueAtTime(0.12, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.16);
+      });
+    } else if (type === 'boost') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.35);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.36);
+    } else if (type === 'heart') {
+      [587.33, 880.00].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+        gain.gain.setValueAtTime(0.15, now + idx * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.25);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + idx * 0.12);
+        osc.stop(now + idx * 0.12 + 0.26);
+      });
+    } else {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, now);
+      osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.11);
+    }
+  } catch(e) {}
+}
+
+const petQuotes = [
+  "Let's go! Rate anyone in seconds! 🚀",
+  "100% Real opinions, zero fake hype! 🔥",
+  "Found a creator you love or hate? Rate them! ⭐",
+  "Vekhu Level Max! Ready for honest reviews! 🐾",
+  "Click me again! I love the hype! ⚡",
+  "No bots allowed here—just real people! 🛡️"
+];
+
+function triggerPetEmote(type) {
+  const pet = document.getElementById("vekhu-pet-char");
+  const bubble = document.getElementById("vekhu-pet-speech");
+  const arena = document.getElementById("freefire-arena");
+  
+  if (!pet) return;
+
+  playPetSound(type);
+
+  pet.classList.remove("pet-anim-jump", "pet-anim-boost", "pet-anim-pet", "pet-idle");
+  void pet.offsetWidth; // Force reflow
+
+  let particleIcons = [];
+  if (type === "jump") {
+    pet.classList.add("pet-anim-jump");
+    particleIcons = ["⭐", "✨", "🎉", "🔥", "🚀"];
+    if (bubble) bubble.textContent = "WOOHOO! 🚀 Let's Rate!";
+  } else if (type === "boost") {
+    pet.classList.add("pet-anim-boost");
+    particleIcons = ["⚡", "⚡", "🔥", "💥", "✨"];
+    if (bubble) bubble.textContent = "SUPERCHARGED! ⚡ 100% Honest!";
+  } else if (type === "pet") {
+    pet.classList.add("pet-anim-pet");
+    particleIcons = ["❤️", "💖", "🐾", "🥰", "✨"];
+    if (bubble) bubble.textContent = "Aww! Vekhu loves you! 🐾";
+  } else {
+    const randomQuote = petQuotes[Math.floor(Math.random() * petQuotes.length)];
+    if (bubble) bubble.textContent = randomQuote;
+    particleIcons = ["💬", "✨", "⭐"];
+  }
+
+  if (arena) {
+    for (let i = 0; i < 4; i++) {
+      const p = document.createElement("span");
+      p.className = "emote-particle";
+      p.textContent = particleIcons[Math.floor(Math.random() * particleIcons.length)];
+      p.style.left = `${42 + (Math.random() * 20 - 10)}%`;
+      p.style.top = `${32 + (Math.random() * 20 - 10)}%`;
+      arena.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    }
+  }
+
+  setTimeout(() => {
+    pet.classList.remove("pet-anim-jump", "pet-anim-boost", "pet-anim-pet");
+    pet.classList.add("pet-idle");
+  }, 950);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const arena = document.getElementById("freefire-arena");
+  const pet = document.getElementById("vekhu-pet-char");
+  
+  if (arena && pet) {
+    arena.addEventListener("mousemove", (e) => {
+      const rect = arena.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      pet.style.transform = `perspective(600px) rotateY(${x * 18}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+    });
+
+    arena.addEventListener("mouseleave", () => {
+      pet.style.transform = "";
+    });
+  }
+});
+

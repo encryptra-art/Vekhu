@@ -169,9 +169,10 @@ async def create_profile(
     category: str,
     bio: str,
     avatar_url: Optional[str] = None,
-    external_url: Optional[str] = None
+    external_url: Optional[str] = None,
+    status: str = "pending"
 ) -> Dict[str, Any]:
-    """Instantly create a new public figure profile."""
+    """Create a new public figure profile (default status is pending approval)."""
     base_slug = slugify(name)
     slug = base_slug
     counter = 1
@@ -193,13 +194,151 @@ async def create_profile(
 
         cursor = await db.execute(
             """
-            INSERT INTO profiles (slug, name, title, category, bio, avatar_url, external_links, rating_count, average_rating, distribution)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0.0, '{"1":0,"2":0,"3":0,"4":0,"5":0}')
+            INSERT INTO profiles (slug, name, title, category, bio, avatar_url, external_links, rating_count, average_rating, distribution, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0.0, '{"1":0,"2":0,"3":0,"4":0,"5":0}', ?)
             """,
-            (slug, name.strip(), title.strip(), category.strip(), bio.strip(), avatar, json.dumps(links))
+            (slug, name.strip(), title.strip(), category.strip(), bio.strip(), avatar, json.dumps(links), status)
         )
         await db.commit()
-        return {"id": cursor.lastrowid, "slug": slug, "name": name}
+        return {"id": cursor.lastrowid, "slug": slug, "name": name, "status": status}
+
+async def get_pending_profiles() -> List[Dict[str, Any]]:
+    """Retrieve profiles waiting for administrator approval."""
+    async with get_db() as db:
+        async with db.execute(
+            "SELECT * FROM profiles WHERE status = 'pending' ORDER BY created_at DESC"
+        ) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def approve_profile(profile_id: int) -> bool:
+    """Approve a pending public figure and publish to the live site."""
+    async with get_db() as db:
+        await db.execute("UPDATE profiles SET status = 'active' WHERE id = ?", (profile_id,))
+        await db.commit()
+        return True
+
+async def reject_profile(profile_id: int) -> bool:
+    """Reject a suggested profile and delete it from the database."""
+    async with get_db() as db:
+        await db.execute("DELETE FROM profiles WHERE id = ?", (profile_id,))
+        await db.commit()
+        return True
+
+async def delete_profile_admin(profile_id: int) -> bool:
+    """Permanently delete a profile and its associated reviews."""
+    async with get_db() as db:
+        await db.execute("DELETE FROM reviews WHERE profile_id = ?", (profile_id,))
+        await db.execute("DELETE FROM profiles WHERE id = ?", (profile_id,))
+        await db.commit()
+        return True
+
+async def toggle_verify_profile(profile_id: int) -> bool:
+    """Toggle verified public figure badge."""
+    async with get_db() as db:
+        await db.execute(
+            "UPDATE profiles SET is_verified = CASE WHEN is_verified = 1 THEN 0 ELSE 1 END WHERE id = ?",
+            (profile_id,)
+        )
+        await db.commit()
+        return True
+
+async def get_all_profiles_admin() -> List[Dict[str, Any]]:
+    """Retrieve all profiles regardless of status for admin management."""
+    async with get_db() as db:
+        async with db.execute(
+            "SELECT * FROM profiles ORDER BY created_at DESC"
+        ) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def get_all_reviews_admin(limit: int = 100) -> List[Dict[str, Any]]:
+    """Retrieve recent reviews across all figures for admin review."""
+    async with get_db() as db:
+        async with db.execute(
+            """
+            SELECT r.*, p.name as profile_name, p.slug as profile_slug 
+            FROM reviews r 
+            JOIN profiles p ON r.profile_id = p.id 
+            ORDER BY r.created_at DESC 
+            LIMIT ?
+            """,
+            (limit,)
+        ) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def delete_review_admin(review_id: int) -> bool:
+    """Permanently delete a review and recalculate profile rating aggregates."""
+    async with get_db() as db:
+        async with db.execute("SELECT profile_id FROM reviews WHERE id = ?", (review_id,)) as cursor:
+            row = await cursor.fetchone()
+            if not row:
+                return False
+            profile_id = row[0]
+
+        await db.execute("DELETE FROM votes WHERE review_id = ?", (review_id,))
+        await db.execute("DELETE FROM reviews WHERE id = ?", (review_id,))
+
+        # Recalculate aggregate stats
+        async with db.execute(
+            "SELECT rating FROM reviews WHERE profile_id = ? AND status = 'published'",
+            (profile_id,)
+        ) as cursor:
+            ratings = [r[0] for r in await cursor.fetchall()]
+
+        total_count = len(ratings)
+        avg_rating = round(sum(ratings) / total_count, 1) if total_count > 0 else 0.0
+        dist = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0}
+        for r in ratings:
+            dist[str(r)] = dist.get(str(r), 0) + 1
+
+        await db.execute(
+            """
+            UPDATE profiles 
+            SET rating_count = ?, average_rating = ?, distribution = ? 
+            WHERE id = ?
+            """,
+            (total_count, avg_rating, json.dumps(dist), profile_id)
+        )
+        await db.commit()
+        return True
+
+async def toggle_review_status_admin(review_id: int) -> str:
+    """Toggle review between published and hidden."""
+    async with get_db() as db:
+        async with db.execute("SELECT status, profile_id FROM reviews WHERE id = ?", (review_id,)) as cursor:
+            row = await cursor.fetchone()
+            if not row:
+                return "not_found"
+            new_status = "hidden" if row[0] == "published" else "published"
+            profile_id = row[1]
+
+        await db.execute("UPDATE reviews SET status = ? WHERE id = ?", (new_status, review_id))
+
+        # Recalculate aggregate stats for published only
+        async with db.execute(
+            "SELECT rating FROM reviews WHERE profile_id = ? AND status = 'published'",
+            (profile_id,)
+        ) as cursor:
+            ratings = [r[0] for r in await cursor.fetchall()]
+
+        total_count = len(ratings)
+        avg_rating = round(sum(ratings) / total_count, 1) if total_count > 0 else 0.0
+        dist = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0}
+        for r in ratings:
+            dist[str(r)] = dist.get(str(r), 0) + 1
+
+        await db.execute(
+            """
+            UPDATE profiles 
+            SET rating_count = ?, average_rating = ?, distribution = ? 
+            WHERE id = ?
+            """,
+            (total_count, avg_rating, json.dumps(dist), profile_id)
+        )
+        await db.commit()
+        return new_status
 
 async def vote_helpful(review_id: int, voter_token: str) -> Dict[str, Any]:
     """Toggle or record helpful vote on a review."""

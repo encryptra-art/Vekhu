@@ -136,9 +136,9 @@
 
           <!-- Submit Button -->
           <div class="pt-4 flex items-center justify-between border-t border-charcoal/5">
-            <span class="text-xs text-mineral">Publishes immediately to the live index</span>
+            <span class="text-xs text-mineral">Submitted to Admin Queue for verification</span>
             <button type="submit" id="submit-btn" class="pill-btn pill-btn-solar text-xs font-semibold py-3.5 px-8">
-              Publish Public Figure →
+              Submit for Approval →
             </button>
           </div>
 
@@ -227,19 +227,29 @@ async function handleCreateProfile(event) {
 
     const result = await res.json();
     if (res.ok && result.success) {
-      showToast('Public figure profile published!', 'success');
-      setTimeout(() => {
-        window.location.href = `/profile/${result.slug}`;
-      }, 700);
+      showToast('Figure submitted! Awaiting administrator approval.', 'success');
+      form.reset();
+      btn.disabled = false;
+      btn.textContent = 'Submit Another Figure →';
+      const previewCard = document.querySelector('.tactile-card.shadow-xl');
+      if (previewCard) {
+        previewCard.innerHTML = `
+          <div class="text-center py-10 space-y-3">
+            <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xl flex items-center justify-center mx-auto">✓</div>
+            <h3 class="text-xl font-bold text-charcoal">Submission Received!</h3>
+            <p class="text-xs text-mineral max-w-xs mx-auto leading-relaxed">Thank you. This public figure has been placed in the editorial approval queue. Once verified by our moderation team, their permanent perception dossier will go live.</p>
+          </div>
+        `;
+      }
     } else {
       showToast(result.detail || result.message || 'Error creating profile.', 'error');
       btn.disabled = false;
-      btn.textContent = 'Publish Public Figure →';
+      btn.textContent = 'Submit for Approval →';
     }
   } catch (err) {
     showToast('Network error.', 'error');
     btn.disabled = false;
-    btn.textContent = 'Publish Public Figure →';
+    btn.textContent = 'Submit for Approval →';
   }
 }
 </script>

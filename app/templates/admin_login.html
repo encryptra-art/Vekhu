@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login — VEKHU Command Center{% endblock %}
+
+{% block content %}
+<div class="min-h-[75vh] flex items-center justify-center px-6 py-16">
+  
+  <div class="tactile-card w-full max-w-md p-8 sm:p-10 bg-white shadow-2xl border border-charcoal/10 relative overflow-hidden">
+    
+    <!-- Header -->
+    <div class="text-center space-y-3 mb-8">
+      <div class="w-12 h-12 rounded-full bg-charcoal text-white flex items-center justify-center font-bold text-lg mx-auto shadow-md">
+        V
+      </div>
+      
+      <div class="flex items-center justify-center gap-2">
+        <h1 class="text-2xl font-bold tracking-tight text-charcoal">Command Center</h1>
+        <span class="pulse-indicator"></span>
+      </div>
+      
+      <p class="text-xs text-mineral max-w-xs mx-auto">
+        Private operational dashboard for figure approvals, community moderation, and index controls.
+      </p>
+    </div>
+
+    <!-- Error Banner -->
+    {% if error %}
+    <div class="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-xs font-semibold flex items-center gap-2">
+      <svg class="w-4 h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <!-- Login Form -->
+    <form method="POST" action="/admin/login" class="space-y-5">
+      <div>
+        <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
+          Administrator Passcode
+        </label>
+        <input 
+          type="password" 
+          name="password" 
+          required 
+          autofocus
+          placeholder="••••••••••••"
+          class="pill-input text-sm text-center tracking-widest bg-sand"
+        >
+      </div>
+
+      <button type="submit" class="pill-btn pill-btn-solar w-full py-3.5 text-xs font-bold tracking-wider uppercase">
+        Access Command Center →
+      </button>
+    </form>
+
+    <!-- Footer Note -->
+    <div class="mt-8 pt-6 border-t border-charcoal/5 text-center">
+      <a href="/" class="text-xs text-mineral hover:text-charcoal transition-colors font-medium">
+        ← Return to Public Website
+      </a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

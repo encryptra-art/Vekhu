@@ -3,11 +3,13 @@ VEKHU Application Server (FastAPI)
 See What The World Really Thinks — Public Perception Index
 """
 
+import os
+import hashlib
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, HTTPException, Header, Depends, Query
+from fastapi import FastAPI, Request, HTTPException, Header, Depends, Query, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, JSONResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, Response, RedirectResponse
 from pathlib import Path
 from typing import Optional
 
@@ -16,6 +18,12 @@ import app.crud as crud
 from app.models import ReviewSubmission, ProfileCreate, ReportSubmission, ResolveReport
 
 BASE_DIR = Path(__file__).resolve().parent
+
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "vekhu2026")
+ADMIN_SESSION_TOKEN = hashlib.sha256(f"vekhu-secret-salt-{ADMIN_PASSWORD}".encode()).hexdigest()
+
+def is_admin(request: Request) -> bool:
+    return request.cookies.get("vekhu_admin_session") == ADMIN_SESSION_TOKEN
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -200,22 +208,76 @@ async def guidelines_page(request: Request):
         }
     )
 
+@app.get("/admin/login", response_class=HTMLResponse)
+async def admin_login_page(request: Request):
+    """Admin Login Screen."""
+    if is_admin(request):
+        return RedirectResponse(url="/admin", status_code=302)
+    return templates.TemplateResponse(
+        request=request,
+        name="admin_login.html",
+        context={"error": None}
+    )
+
+@app.post("/admin/login", response_class=HTMLResponse)
+async def admin_login_post(request: Request):
+    """Process admin login form."""
+    form_data = await request.form()
+    password = form_data.get("password", "")
+
+    if password == ADMIN_PASSWORD:
+        response = RedirectResponse(url="/admin", status_code=302)
+        response.set_cookie(
+            key="vekhu_admin_session",
+            value=ADMIN_SESSION_TOKEN,
+            max_age=86400 * 30,  # 30 days
+            httponly=True,
+            samesite="lax"
+        )
+        return response
+
+    return templates.TemplateResponse(
+        request=request,
+        name="admin_login.html",
+        context={"error": "Invalid admin passcode. Access denied."}
+    )
+
+@app.get("/admin/logout")
+async def admin_logout():
+    """Logout from admin console."""
+    response = RedirectResponse(url="/admin/login", status_code=302)
+    response.delete_cookie(key="vekhu_admin_session")
+    return response
+
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request):
-    """Moderation Console for inspecting and acting on reports."""
+    """Secure Command Center for Approvals, Moderation & Operations."""
+    if not is_admin(request):
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    pending_profiles = await crud.get_pending_profiles()
+    all_profiles = await crud.get_all_profiles_admin()
+    all_reviews = await crud.get_all_reviews_admin(limit=100)
     reports = await crud.get_admin_reports()
-    all_profiles = await crud.get_all_profiles()
     
-    total_reviews = sum(p["rating_count"] for p in all_profiles)
+    total_reviews = len(all_reviews)
+    pending_reports = [r for r in reports if r.get("status") == "pending"]
+
     stats = {
         "total_profiles": len(all_profiles),
-        "total_reviews": total_reviews
+        "active_profiles": len([p for p in all_profiles if p.get("status") == "active"]),
+        "pending_profiles": len(pending_profiles),
+        "total_reviews": total_reviews,
+        "pending_reports": len(pending_reports)
     }
     
     return templates.TemplateResponse(
         request=request,
         name="admin.html",
         context={
+            "pending_profiles": pending_profiles,
+            "all_profiles": all_profiles,
+            "all_reviews": all_reviews,
             "reports": reports,
             "stats": stats,
             "active_page": "admin"
@@ -272,16 +334,23 @@ async def api_vote_helpful(
 
 @app.post("/api/profiles")
 async def api_create_profile(profile: ProfileCreate):
-    """Instantly publish a new public figure profile."""
+    """Submit a new public figure profile (queued for editorial approval)."""
     result = await crud.create_profile(
         name=profile.name,
         title=profile.title,
         category=profile.category,
         bio=profile.bio,
         avatar_url=profile.avatar_url,
-        external_url=profile.external_url
+        external_url=profile.external_url,
+        status="pending"
     )
-    return {"success": True, "slug": result["slug"], "name": result["name"]}
+    return {
+        "success": True,
+        "status": "pending",
+        "slug": result["slug"],
+        "name": result["name"],
+        "message": "Public figure submitted for editorial approval! It will appear on VEKHU once approved by an admin."
+    }
 
 @app.post("/api/reports")
 async def api_submit_report(report: ReportSubmission, request: Request):
@@ -297,8 +366,62 @@ async def api_submit_report(report: ReportSubmission, request: Request):
     )
     return result
 
+# ============================================================================
+# ADMIN PROTECTED APIS (Approvals, Deletions, Status Toggles)
+# ============================================================================
+
+@app.post("/api/admin/profiles/{profile_id}/approve")
+async def api_approve_profile(profile_id: int, request: Request):
+    """Approve a pending public figure profile."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    await crud.approve_profile(profile_id)
+    return {"success": True, "message": "Profile approved and published to live index"}
+
+@app.post("/api/admin/profiles/{profile_id}/reject")
+async def api_reject_profile(profile_id: int, request: Request):
+    """Reject and delete a pending public figure profile."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    await crud.reject_profile(profile_id)
+    return {"success": True, "message": "Profile rejected and deleted"}
+
+@app.post("/api/admin/profiles/{profile_id}/delete")
+async def api_delete_profile(profile_id: int, request: Request):
+    """Permanently delete an existing public figure profile."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    await crud.delete_profile_admin(profile_id)
+    return {"success": True, "message": "Profile deleted permanently"}
+
+@app.post("/api/admin/profiles/{profile_id}/verify")
+async def api_toggle_verify_profile(profile_id: int, request: Request):
+    """Toggle verified badge on a public figure profile."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    await crud.toggle_verify_profile(profile_id)
+    return {"success": True, "message": "Verified status toggled"}
+
+@app.post("/api/admin/reviews/{review_id}/delete")
+async def api_delete_review(review_id: int, request: Request):
+    """Permanently delete a community review."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    await crud.delete_review_admin(review_id)
+    return {"success": True, "message": "Review deleted and scores recalculated"}
+
+@app.post("/api/admin/reviews/{review_id}/toggle-status")
+async def api_toggle_review_status(review_id: int, request: Request):
+    """Toggle review between published and hidden."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    new_status = await crud.toggle_review_status_admin(review_id)
+    return {"success": True, "status": new_status, "message": f"Review is now {new_status}"}
+
 @app.post("/api/admin/reports/resolve")
-async def api_resolve_report(action_data: ResolveReport):
+async def api_resolve_report(action_data: ResolveReport, request: Request):
     """Admin action to dismiss or hide reported content."""
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Unauthorized")
     result = await crud.resolve_report(report_id=action_data.report_id, action=action_data.action)
     return result

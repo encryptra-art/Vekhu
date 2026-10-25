@@ -16,8 +16,14 @@
 
   <title>{% block title %}VEKHU — See What The World Really Thinks | Public Perception Index{% endblock %}</title>
   
+  <!-- Favicon & Brand Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/img/mascot-avatar.png">
+
   <!-- Primary Meta & SEO Tags -->
-  <meta name="description" content="{% block meta_desc %}VEKHU is the public perception ledger. Discover aggregate sentiment, 5-star distribution curves, and contextual critiques of the minds shaping culture and technology.{% endblock %}">
+  <meta name="description" content="{% block meta_desc %}VEKHU is the honest community review site. See real ratings and reviews for founders, creators, and public figures.{% endblock %}">
   <link rel="canonical" href="{% block canonical_url %}https://vekhu.com/{% endblock %}">
   
   <!-- OpenGraph / Social Media Meta -->
@@ -118,37 +124,38 @@
   <header class="sticky top-0 z-40 bg-bone/85 backdrop-blur-md border-b border-charcoal/5 transition-all">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       
-      <!-- Brand Logo -->
-      <a href="/" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 rounded-full bg-charcoal text-white flex items-center justify-center font-bold tracking-tighter text-sm group-hover:scale-105 transition-transform">
-          V
+      <!-- Brand Logo with Mascot Avatar -->
+      <a href="/" class="flex items-center gap-2.5 group">
+        <div class="relative">
+          <img src="/static/img/mascot-avatar.png" alt="Vekhu Mascot" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm group-hover:scale-105 transition-transform bg-sand">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute bottom-0 right-0"></span>
         </div>
         <div class="flex items-center gap-2">
           <span class="font-bold text-xl tracking-tight text-charcoal">VEKHU</span>
           <span class="pulse-indicator"></span>
         </div>
-        <span class="hidden md:inline-block text-xs font-semibold text-mineral tracking-wider uppercase pl-2 border-l border-charcoal/10">
-          Perception Index
+        <span class="hidden md:inline-block text-xs font-medium text-mineral tracking-normal pl-2 border-l border-charcoal/10">
+          Real Opinions
         </span>
       </a>
 
       <!-- Primary Navigation Links -->
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-mineral">
         <a href="/discover" class="hover:text-charcoal transition-colors {% if active_page == 'discover' %}text-charcoal font-semibold{% endif %}">
-          Explore Figures
+          Explore People
         </a>
         <a href="/create" class="hover:text-charcoal transition-colors {% if active_page == 'create' %}text-charcoal font-semibold{% endif %}">
-          + Add Public Figure
+          + Add Someone
         </a>
         <a href="/guidelines" class="hover:text-charcoal transition-colors {% if active_page == 'guidelines' %}text-charcoal font-semibold{% endif %}">
-          Integrity & Policy
+          Guidelines
         </a>
       </nav>
 
       <!-- Action Area -->
       <div class="flex items-center gap-3">
         <a href="/discover" class="pill-btn pill-btn-solar text-xs md:text-sm font-medium">
-          Rate a Figure
+          Rate Someone
         </a>
       </div>
 
@@ -160,51 +167,52 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Editorial Platform Footer -->
+  <!-- Clean Community Footer -->
   <footer class="border-t border-charcoal/10 bg-sand/60 backdrop-blur-sm mt-24 py-16 text-mineral z-10">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         
         <div class="md:col-span-2 space-y-4">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-3">
+            <img src="/static/img/mascot-avatar.png" alt="Vekhu Mascot" class="w-9 h-9 rounded-full object-cover border border-charcoal/10 shadow-sm bg-white">
             <span class="font-bold text-xl tracking-tight text-charcoal">VEKHU</span>
             <span class="pulse-indicator"></span>
           </div>
           <p class="text-sm leading-relaxed max-w-md">
-            The real-time public perception index. See what the world really thinks about the figures who shape contemporary technology, culture, and media.
+            The honest community review board. See what real people actually think about founders, creators, and public figures.
           </p>
-          <div class="text-xs text-mineral/80 pt-2">
-            Independent, community-driven, and non-corruptible. Scores cannot be purchased or altered.
+          <div class="text-xs text-mineral/80 pt-1">
+            100% free, anonymous, and independent. Ratings can never be bought or altered.
           </div>
         </div>
 
         <div>
-          <h4 class="text-xs font-bold text-charcoal uppercase tracking-wider mb-4">Navigation</h4>
+          <h4 class="text-xs font-bold text-charcoal uppercase tracking-wider mb-4">Quick Links</h4>
           <ul class="space-y-2.5 text-sm">
-            <li><a href="/discover" class="hover:text-charcoal transition-colors">Directory of Figures</a></li>
-            <li><a href="/create" class="hover:text-charcoal transition-colors">Add Public Figure</a></li>
-            <li><a href="/guidelines" class="hover:text-charcoal transition-colors">Perception & Review Standards</a></li>
-            <li><a href="/admin" class="hover:text-charcoal transition-colors">Moderation & Transparency</a></li>
+            <li><a href="/discover" class="hover:text-charcoal transition-colors">Explore People</a></li>
+            <li><a href="/create" class="hover:text-charcoal transition-colors">+ Add Someone</a></li>
+            <li><a href="/guidelines" class="hover:text-charcoal transition-colors">Community Guidelines</a></li>
+            <li><a href="/admin" class="hover:text-charcoal transition-colors">Admin Login</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="text-xs font-bold text-charcoal uppercase tracking-wider mb-4">Integrity & Safety</h4>
+          <h4 class="text-xs font-bold text-charcoal uppercase tracking-wider mb-4">Safety & Guidelines</h4>
           <p class="text-xs leading-relaxed text-mineral mb-3">
-            PULSE applies strictly to public figures. Private individuals and doxxing are strictly prohibited and immediately expunged.
+            VEKHU is only for public figures and creators. Private individuals and harassment are strictly prohibited.
           </p>
           <a href="/guidelines" class="text-xs font-semibold text-solar hover:underline inline-flex items-center gap-1">
-            Read Community Guidelines →
+            Read Community Rules →
           </a>
         </div>
 
       </div>
 
       <div class="pt-8 border-t border-charcoal/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-        <div>© 2026 VEKHU Technologies (vekhu.com). All perspectives represent independent community sentiment.</div>
+        <div>© 2026 VEKHU (vekhu.com). Real community reviews and honest ratings.</div>
         <div class="flex items-center gap-6">
+          <a href="/guidelines" class="hover:text-charcoal">Community Rules</a>
           <a href="/guidelines#privacy" class="hover:text-charcoal">Privacy & Anonymity</a>
-          <a href="/guidelines#public-doctrine" class="hover:text-charcoal">Public Figure Doctrine</a>
         </div>
       </div>
     </div>

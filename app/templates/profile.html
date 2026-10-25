@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}{{ profile.name }} Reviews & Perception Score | VEKHU{% endblock %}
-{% block meta_desc %}Read community reviews, 5-star distribution curve, and collective perception of {{ profile.name }} ({{ profile.title }}) on VEKHU.{% endblock %}
+{% block title %}{{ profile.name }} Reviews & Rating | VEKHU{% endblock %}
+{% block meta_desc %}Read community reviews, star ratings, and honest feedback for {{ profile.name }} ({{ profile.title }}) on VEKHU.{% endblock %}
 {% block canonical_url %}https://vekhu.com/profile/{{ profile.slug }}{% endblock %}
 
 {% block extra_head %}
@@ -43,8 +43,8 @@
       "@type": "ItemPage",
       "@id": "https://vekhu.com/profile/{{ profile.slug }}#webpage",
       "url": "https://vekhu.com/profile/{{ profile.slug }}",
-      "name": "{{ profile.name }} Reviews & Perception Score | VEKHU",
-      "description": "Read community reviews, 5-star distribution curve, and collective perception of {{ profile.name }} ({{ profile.title }}) on VEKHU.",
+      "name": "{{ profile.name }} Reviews & Rating | VEKHU",
+      "description": "Read community reviews, star ratings, and honest feedback for {{ profile.name }} on VEKHU.",
       "mainEntity": {
         "@type": "Person",
         "@id": "https://vekhu.com/profile/{{ profile.slug }}#person",
@@ -90,11 +90,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-6 py-12">
+<div class="max-w-7xl mx-auto px-6 py-10 sm:py-12">
 
-  <!-- ======================================================================
-       BREADCRUMB & REPORT TRIGGER
-       ====================================================================== -->
+  <!-- Breadcrumb & Report Link -->
   <div class="flex items-center justify-between text-xs text-mineral mb-8">
     <div class="flex items-center gap-2">
       <a href="/discover" class="hover:text-charcoal">Directory</a>
@@ -114,20 +112,18 @@
   </div>
 
 
-  <!-- ======================================================================
-       PROFILE HEADER & STATS (Sculptural Dual-Column)
-       ====================================================================== -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start mb-16">
+  <!-- Profile Header & Rating Card -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start mb-14 sm:mb-16">
     
     <!-- Left Column: Identity & Bio (7 cols) -->
     <div class="lg:col-span-7 space-y-6">
       
-      <div class="flex items-start gap-6">
-        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-sand border-2 border-white shadow-lg flex-shrink-0">
+      <div class="flex items-start gap-5 sm:gap-6">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden bg-sand border-2 border-white shadow-lg flex-shrink-0">
           <img src="{{ profile.avatar_url }}" alt="{{ profile.name }}" class="w-full h-full object-cover">
         </div>
 
-        <div class="space-y-2">
+        <div class="space-y-1.5 sm:space-y-2">
           <div class="flex flex-wrap items-center gap-2">
             <span class="tag-capsule tag-capsule-solar">{{ profile.category }}</span>
             {% if profile.is_verified %}
@@ -136,55 +132,55 @@
             </span>
             {% endif %}
           </div>
-          <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-charcoal tracking-tight">
+          <h1 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-charcoal tracking-tight">
             {{ profile.name }}
           </h1>
-          <p class="text-sm sm:text-base text-mineral font-medium">
+          <p class="text-xs sm:text-sm md:text-base text-mineral font-medium">
             {{ profile.title }}
           </p>
         </div>
       </div>
 
       <!-- Bio -->
-      <p class="text-sm sm:text-base text-charcoal/80 leading-relaxed font-normal bg-white p-6 rounded-3xl border border-charcoal/5 shadow-sm">
+      <p class="text-xs sm:text-sm md:text-base text-charcoal/80 leading-relaxed font-normal bg-white p-5 sm:p-6 rounded-3xl border border-charcoal/5 shadow-sm">
         {{ profile.bio }}
       </p>
 
-      <!-- External Links & Actions -->
-      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
-        <div class="flex items-center gap-3">
+      <!-- External Links & Share Trigger -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-1">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
           {% for link in profile.external_links %}
-          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="pill-btn pill-btn-outline text-xs py-2 px-4 inline-flex items-center gap-1.5">
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="pill-btn pill-btn-outline text-xs py-2 px-3.5 inline-flex items-center gap-1.5">
             <span>{{ link.label }}</span>
             <svg class="w-3 h-3 text-mineral" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </a>
           {% endfor %}
         </div>
 
-        <!-- Share & Perception Card Trigger -->
+        <!-- Share Score Card Button -->
         <button 
           onclick="triggerPerceptionCard()" 
           class="pill-btn pill-btn-outline text-xs py-2 px-4 inline-flex items-center gap-2 hover:border-solar hover:text-solar"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-          Export Perception Card (PNG)
+          Share Score Card
         </button>
       </div>
 
     </div>
 
-    <!-- Right Column: 5-Star Distribution & Consensus Meter (5 cols) -->
+    <!-- Right Column: Rating Breakdown Card (5 cols) -->
     <div class="lg:col-span-5">
-      <div class="tactile-card p-8 bg-white space-y-6">
+      <div class="tactile-card p-6 sm:p-8 bg-white space-y-6">
         
         <div class="flex items-center justify-between border-b border-charcoal/5 pb-4">
-          <span class="text-xs font-bold uppercase tracking-wider text-charcoal">Public Perception Score</span>
-          <span class="text-xs text-mineral">{{ profile.rating_count }} Recorded Opinions</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-charcoal">Community Score</span>
+          <span class="text-xs text-mineral">{{ profile.rating_count }} Ratings</span>
         </div>
 
-        <!-- Big Score & Star Visual -->
+        <!-- Big Score & Stars -->
         <div class="flex items-baseline gap-4">
-          <span class="text-6xl font-bold tracking-tight text-charcoal font-sans">
+          <span class="text-5xl sm:text-6xl font-bold tracking-tight text-charcoal font-sans">
             {{ "%.1f"|format(profile.average_rating) }}
           </span>
           <div>
@@ -192,12 +188,12 @@
               {% set r_rounded = profile.average_rating|round|int %}
               {% for i in range(r_rounded) %}★{% endfor %}{% for i in range(5 - r_rounded) %}☆{% endfor %}
             </div>
-            <span class="text-xs text-mineral font-medium">Out of 5.0 Maximum</span>
+            <span class="text-xs text-mineral font-medium">Out of 5.0</span>
           </div>
         </div>
 
-        <!-- Distribution Histogram -->
-        <div class="space-y-2.5 pt-2">
+        <!-- Rating Distribution Bars -->
+        <div class="space-y-2.5 pt-1">
           {% set total_r = profile.rating_count if profile.rating_count > 0 else 1 %}
           {% for star in [5, 4, 3, 2, 1] %}
           {% set star_key = star|string %}
@@ -215,9 +211,9 @@
           {% endfor %}
         </div>
 
-        <div class="pt-4 border-t border-charcoal/5">
+        <div class="pt-3 border-t border-charcoal/5">
           <a href="#rate" class="pill-btn pill-btn-solar w-full text-center text-xs font-semibold py-3.5">
-            + Record Your Perception
+            + Rate {{ profile.name }}
           </a>
         </div>
 
@@ -228,20 +224,20 @@
 
 
   <!-- ======================================================================
-       RECORD YOUR OPINION COMPOSER (Zero-Friction Anonymous)
+       RATE THIS FIGURE (Simple, 100% Anonymous Form)
        ====================================================================== -->
-  <section id="rate" class="tactile-card p-8 md:p-12 bg-white/95 mb-16 border border-charcoal/10 relative overflow-hidden">
+  <section id="rate" class="tactile-card p-6 sm:p-10 md:p-12 bg-white mb-16 border border-charcoal/10 relative overflow-hidden">
     
     <div class="max-w-2xl mb-8 space-y-2">
       <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-solar">
-        <span class="w-2 h-2 rounded-full bg-solar"></span>
-        <span>Zero-Friction Anonymous Submission</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span>Free & Anonymous</span>
       </div>
       <h2 class="text-2xl sm:text-3xl font-bold text-charcoal tracking-tight">
-        Record your perception of {{ profile.name }}
+        Rate {{ profile.name }}
       </h2>
       <p class="text-xs sm:text-sm text-mineral">
-        Your perspective will directly update the public perception ledger. Honest critique is protected; personal harassment and slander are strictly prohibited.
+        Share your honest experience. No login needed. Harassment and hate speech are not allowed.
       </p>
     </div>
 
@@ -251,9 +247,9 @@
       <!-- 1. Star Rating Interactive Selector -->
       <div>
         <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-          1. Select Community Rating <span class="text-solar">*</span>
+          1. Your Rating <span class="text-solar">*</span>
         </label>
-        <div class="star-rating-interactive py-2">
+        <div class="star-rating-interactive py-1">
           <input type="hidden" name="rating" value="5" required>
           {% for i in range(1, 6) %}
           <svg data-value="{{ i }}" class="active" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
@@ -261,40 +257,38 @@
         </div>
       </div>
 
-      <!-- 2. Perspective Context -->
+      <!-- 2. Context -->
       <div>
         <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-          2. Your Perspective Lens / Context <span class="text-solar">*</span>
+          2. How do you know them? <span class="text-solar">*</span>
         </label>
         <select name="perspective_context" required class="pill-input text-xs sm:text-sm font-medium">
-          <option value="Long-time Observer">Long-time Observer (Followed work/career for years)</option>
-          <option value="Direct Interaction">Direct Interaction (Met, worked with, or transacted with them)</option>
-          <option value="Industry Peer / Collaborator">Industry Peer / Collaborator (Work in the same field/domain)</option>
-          <option value="Critical Reader / Audience">Critical Reader / Audience (Consumes output with critical eye)</option>
-          <option value="Casual Observer">Casual Observer (General public impression)</option>
+          <option value="Long-time Follower">Long-time Follower (Followed their work for years)</option>
+          <option value="Worked with them">Worked with them (Met, worked with, or transacted with them)</option>
+          <option value="Industry Peer">Industry Peer (Work in the same field/industry)</option>
+          <option value="Casual Observer">Casual Observer (General impression from public media)</option>
         </select>
-        <p class="text-[11px] text-mineral mt-1 pl-4">Tagging your lens gives credibility and qualitative weight to your rating.</p>
       </div>
 
       <!-- 3. Headline -->
       <div>
         <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-          3. Perspective Headline <span class="text-solar">*</span>
+          3. One-line Summary <span class="text-solar">*</span>
         </label>
         <input 
           type="text" 
           name="headline" 
-          placeholder="E.g. Unmatched visionary execution, but corporate communication lacked transparency..." 
+          placeholder="E.g. Great vision, but communication could be better..." 
           required 
           maxlength="120"
           class="pill-input text-sm"
         >
       </div>
 
-      <!-- 4. Detailed Written Opinion -->
+      <!-- 4. Detailed Written Review -->
       <div>
         <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-          4. Written Critique & Rationale <span class="text-solar">*</span>
+          4. Detailed Review <span class="text-solar">*</span>
         </label>
         <textarea 
           name="content" 
@@ -302,37 +296,37 @@
           required 
           minlength="10" 
           maxlength="2500"
-          placeholder="Share your reasoned thoughts. What specific projects, actions, speeches, or decisions inform your rating? Why does the public perceive them this way?"
+          placeholder="Why do you rate them this way? Share your reasons, experiences, or specific examples..."
           class="w-full rounded-2xl bg-sand p-4 text-sm border border-charcoal/10 focus:border-solar focus:outline-none"
         ></textarea>
       </div>
 
-      <!-- 5. Contributor Alias -->
+      <!-- 5. Contributor Name (Optional) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-            Contributor Name / Handle (Optional)
+            Your Name or Nickname (Optional)
           </label>
           <input 
             type="text" 
             name="author_alias" 
-            placeholder="Anonymous Contributor (or enter alias)" 
+            placeholder="Anonymous (or enter nickname)" 
             maxlength="50"
             class="pill-input text-sm"
           >
         </div>
         <div class="flex items-end">
           <div class="text-[11px] text-mineral leading-relaxed pl-2 pb-2">
-            🔒 IP hashed & salt-protected. No login wall required to encourage fearless, candid critique.
+            🔒 100% Anonymous. No account or password required.
           </div>
         </div>
       </div>
 
       <!-- Submit Action -->
       <div class="pt-4 flex items-center justify-between border-t border-charcoal/5">
-        <span class="text-xs text-mineral">Subject to PULSE Community Standards</span>
+        <span class="text-xs text-mineral">Protected by VEKHU Community Rules</span>
         <button type="submit" class="pill-btn pill-btn-solar text-xs font-semibold py-3.5 px-8">
-          Submit to Public Index →
+          Post Review →
         </button>
       </div>
 
@@ -342,21 +336,21 @@
 
 
   <!-- ======================================================================
-       COMMUNITY OPINIONS FEED
+       COMMUNITY REVIEWS FEED
        ====================================================================== -->
-  <section class="space-y-8">
+  <section class="space-y-6">
     <div class="flex items-center justify-between border-b border-charcoal/10 pb-4">
       <div>
-        <span class="text-xs font-bold uppercase tracking-wider text-solar">Public Record</span>
-        <h3 class="text-2xl font-bold text-charcoal tracking-tight">Recorded Community Perspectives</h3>
+        <span class="text-xs font-bold uppercase tracking-wider text-solar">Community</span>
+        <h3 class="text-xl sm:text-2xl font-bold text-charcoal tracking-tight">Community Reviews</h3>
       </div>
-      <span class="text-xs font-mono text-mineral">{{ profile.reviews|length }} perspectives</span>
+      <span class="text-xs font-mono text-mineral">{{ profile.reviews|length }} reviews</span>
     </div>
 
     {% if profile.reviews and profile.reviews|length > 0 %}
-    <div class="space-y-6">
+    <div class="space-y-5">
       {% for review in profile.reviews %}
-      <div class="tactile-card p-6 sm:p-8 bg-white border border-charcoal/5 relative space-y-4">
+      <div class="tactile-card p-6 sm:p-7 bg-white border border-charcoal/5 relative space-y-3.5">
         
         <!-- Review Top Metadata -->
         <div class="flex flex-wrap items-center justify-between gap-3">
@@ -375,17 +369,17 @@
         </div>
 
         <!-- Headline -->
-        <h4 class="text-lg font-bold text-charcoal tracking-tight">
+        <h4 class="text-base sm:text-lg font-bold text-charcoal tracking-tight">
           {{ review.headline }}
         </h4>
 
         <!-- Content -->
-        <p class="text-sm text-charcoal/80 leading-relaxed font-normal">
+        <p class="text-xs sm:text-sm text-charcoal/80 leading-relaxed font-normal">
           {{ review.content }}
         </p>
 
         <!-- Review Footer: Helpful & Flag Actions -->
-        <div class="pt-4 border-t border-charcoal/5 flex items-center justify-between">
+        <div class="pt-3 border-t border-charcoal/5 flex items-center justify-between">
           <button 
             onclick="voteHelpful({{ review.id }}, this)" 
             class="pill-btn pill-btn-outline text-xs py-1.5 px-3.5 inline-flex items-center gap-1.5 hover:text-solar hover:border-solar"
@@ -398,7 +392,7 @@
             onclick="openReportModal('review', {{ review.id }})" 
             class="text-mineral/70 hover:text-red-600 text-xs transition-colors"
           >
-            Report perspective
+            Report review
           </button>
         </div>
 
@@ -406,11 +400,16 @@
       {% endfor %}
     </div>
     {% else %}
-    <div class="tactile-card p-12 text-center bg-white">
-      <p class="text-mineral text-sm mb-4">No community reviews have been recorded yet for this profile.</p>
-      <a href="#rate" class="pill-btn pill-btn-solar text-xs font-semibold py-2.5 px-6">
-        Be the First to Record a Perception
-      </a>
+    <div class="tactile-card p-10 sm:p-12 text-center bg-white space-y-4">
+      <div class="w-16 h-16 rounded-full overflow-hidden mx-auto shadow-sm border border-charcoal/10 bg-sand">
+        <img src="/static/img/mascot-avatar.png" alt="Vekhu" class="w-full h-full object-cover">
+      </div>
+      <p class="text-mineral text-sm">No reviews yet for {{ profile.name }}. Be the first to share your rating!</p>
+      <div>
+        <a href="#rate" class="pill-btn pill-btn-solar text-xs font-semibold py-2.5 px-6 inline-block">
+          Rate {{ profile.name }}
+        </a>
+      </div>
     </div>
     {% endif %}
 

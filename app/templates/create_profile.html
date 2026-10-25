@@ -1,38 +1,39 @@
 {% extends "base.html" %}
 
-{% block title %}Add Public Figure — VEKHU Perception Index{% endblock %}
+{% block title %}Add Someone New — VEKHU{% endblock %}
+{% block meta_desc %}Add a public figure, creator, or tech founder to the VEKHU community review directory.{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-6 py-12">
+<div class="max-w-7xl mx-auto px-6 py-10 sm:py-12">
 
-  <div class="max-w-2xl mb-12 space-y-3">
+  <div class="max-w-2xl mb-10 space-y-2">
     <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-solar">
-      <span>Open Profile Creation</span>
+      <span>Community Directory</span>
       <span>•</span>
-      <span>Community Indexed</span>
+      <span>Add New Profile</span>
     </div>
-    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-charcoal">
-      Add a Public Figure to VEKHU
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-charcoal">
+      Add Someone to VEKHU
     </h1>
-    <p class="text-mineral text-base leading-relaxed">
-      Expand the perception ledger. Anyone can add an individual who possesses an active public footprint in culture, technology, media, or civic discourse.
+    <p class="text-mineral text-sm sm:text-base leading-relaxed">
+      Know a creator, tech founder, or public figure you'd like people to rate? Add them to the community directory in 30 seconds.
     </p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
     
     <!-- Left Column: Creation Form (7 cols) -->
     <div class="lg:col-span-7">
-      <div class="tactile-card p-8 md:p-10 bg-white space-y-6">
+      <div class="tactile-card p-6 sm:p-10 bg-white space-y-6">
         
-        <!-- Public Figure Doctrine Notice -->
+        <!-- Friendly Vekhu Tip Banner -->
         <div class="bg-sand/70 p-5 rounded-2xl border border-charcoal/5 flex items-start gap-4">
-          <div class="w-8 h-8 rounded-full bg-solar-soft text-solar flex items-center justify-center font-bold text-sm flex-shrink-0">
-            ℹ
+          <div class="w-10 h-10 rounded-full overflow-hidden shadow-sm flex-shrink-0 bg-white border border-charcoal/10">
+            <img src="/static/img/mascot-avatar.png" alt="Vekhu" class="w-full h-full object-cover">
           </div>
           <div class="text-xs text-mineral leading-relaxed">
-            <span class="font-bold text-charcoal block mb-0.5">Strict Public Figure Boundary</span>
-            Do not submit private individuals, minors, coworkers, or personal acquaintances. Profiles for non-public persons are removed and subject to IP bans.
+            <span class="font-bold text-charcoal block mb-0.5">Vekhu's Golden Rule</span>
+            Only add <strong>public figures</strong> (creators, founders, authors, executives, artists). Private individuals and personal friends are strictly prohibited.
           </div>
         </div>
 
@@ -41,7 +42,7 @@
           <!-- Name -->
           <div>
             <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-              Full Public Name <span class="text-solar">*</span>
+              Full Name <span class="text-solar">*</span>
             </label>
             <input 
               type="text" 
@@ -60,7 +61,7 @@
           <!-- Title -->
           <div>
             <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-              Primary Role & Context <span class="text-solar">*</span>
+              What are they known for? (Role or Title) <span class="text-solar">*</span>
             </label>
             <input 
               type="text" 
@@ -69,7 +70,7 @@
               required 
               minlength="3" 
               maxlength="120"
-              placeholder="E.g. CEO of NVIDIA, Music Producer & Author, Inventor & Creator..." 
+              placeholder="E.g. CEO of NVIDIA, Tech Creator, Author & Podcaster..." 
               class="pill-input text-sm"
               oninput="updatePreview()"
             >
@@ -91,7 +92,7 @@
           <!-- Bio -->
           <div>
             <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-              Public Bio & Impact Context <span class="text-solar">*</span>
+              Short Bio <span class="text-solar">*</span>
             </label>
             <textarea 
               name="bio" 
@@ -100,7 +101,7 @@
               required 
               minlength="20" 
               maxlength="1500"
-              placeholder="Summarize their key accomplishments, public influence, and reasons they are a recognized cultural or industry figure..."
+              placeholder="Tell people who they are, what they created, and what projects they are known for..."
               class="w-full rounded-2xl bg-sand p-4 text-sm border border-charcoal/10 focus:border-solar focus:outline-none"
               oninput="updatePreview()"
             ></textarea>
@@ -109,13 +110,13 @@
           <!-- Avatar Image URL -->
           <div>
             <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-              Portrait / Avatar Image URL (Optional)
+              Profile Photo Link (Optional)
             </label>
             <input 
               type="url" 
               name="avatar_url" 
               id="input-avatar"
-              placeholder="https://... (Leave blank for default editorial portrait)" 
+              placeholder="https://... (Leave blank for default picture)" 
               class="pill-input text-sm"
               oninput="updatePreview()"
             >
@@ -124,21 +125,21 @@
           <!-- External Reference Link -->
           <div>
             <label class="block text-xs font-bold text-charcoal uppercase tracking-wider mb-2">
-              Official Reference Link (Wikipedia, Twitter/X, Website)
+              Official Link (Wikipedia, Twitter/X, Website)
             </label>
             <input 
               type="url" 
               name="external_url" 
-              placeholder="https://en.wikipedia.org/wiki/..." 
+              placeholder="https://twitter.com/... or https://en.wikipedia.org/..." 
               class="pill-input text-sm"
             >
           </div>
 
           <!-- Submit Button -->
           <div class="pt-4 flex items-center justify-between border-t border-charcoal/5">
-            <span class="text-xs text-mineral">Submitted to Admin Queue for verification</span>
+            <span class="text-xs text-mineral">Reviewed by moderation team</span>
             <button type="submit" id="submit-btn" class="pill-btn pill-btn-solar text-xs font-semibold py-3.5 px-8">
-              Submit for Approval →
+              Submit Profile →
             </button>
           </div>
 
@@ -147,12 +148,12 @@
       </div>
     </div>
 
-    <!-- Right Column: Live Interactive Card Preview (5 cols) -->
+    <!-- Right Column: Live Card Preview (5 cols) -->
     <div class="lg:col-span-5 sticky top-28">
       <div class="space-y-4">
-        <span class="text-xs font-bold uppercase tracking-wider text-mineral">Live Dossier Preview</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-mineral">Live Preview</span>
         
-        <div class="tactile-card p-8 bg-white space-y-6 shadow-xl border border-charcoal/10">
+        <div class="tactile-card p-7 bg-white space-y-6 shadow-xl border border-charcoal/10">
           <div class="flex items-start justify-between">
             <span id="preview-category" class="tag-capsule tag-capsule-solar">Tech & Founders</span>
             <div class="flex items-center gap-1 text-xs font-bold text-charcoal bg-sand px-2.5 py-1 rounded-full">
@@ -162,23 +163,28 @@
           </div>
 
           <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full overflow-hidden bg-sand border-2 border-white shadow flex-shrink-0">
-              <img id="preview-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Avatar preview" class="w-full h-full object-cover">
+            <div class="w-16 h-16 rounded-full overflow-hidden bg-sand border border-charcoal/10 flex-shrink-0">
+              <img id="preview-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Preview avatar" class="w-full h-full object-cover">
             </div>
             <div>
-              <h3 id="preview-name" class="text-2xl font-bold font-display text-charcoal">Public Figure Name</h3>
-              <p id="preview-title" class="text-xs text-mineral mt-0.5">Primary Title & Role</p>
+              <h3 id="preview-name" class="text-xl font-bold text-charcoal">Name will appear here</h3>
+              <p id="preview-title" class="text-xs text-mineral mt-0.5">Role / Title</p>
             </div>
           </div>
 
           <p id="preview-bio" class="text-xs text-mineral leading-relaxed line-clamp-3">
-            Public biography and context will appear here as you type. Once published, anyone can record opinions and explore the 5-star distribution curve.
+            Your short bio will appear here to help visitors learn about this figure before rating...
           </p>
 
           <div class="pt-4 border-t border-charcoal/5 flex items-center justify-between text-xs text-mineral">
-            <span>0 Recorded Opinions</span>
-            <span class="font-semibold text-charcoal">Ready for ratings</span>
+            <span>0 ratings</span>
+            <span class="font-semibold text-solar">Ready to be rated</span>
           </div>
+        </div>
+
+        <div class="p-4 bg-sand/60 rounded-2xl border border-charcoal/5 text-xs text-mineral flex items-center gap-3">
+          <img src="/static/img/mascot-avatar.png" alt="Vekhu" class="w-8 h-8 rounded-full flex-shrink-0">
+          <span>Once submitted, our moderators check public eligibility before making it visible.</span>
         </div>
       </div>
     </div>
@@ -189,10 +195,10 @@
 
 <script>
 function updatePreview() {
-  const name = document.getElementById('input-name').value.trim() || 'Public Figure Name';
-  const title = document.getElementById('input-title').value.trim() || 'Primary Title & Role';
+  const name = document.getElementById('input-name').value.trim() || 'Name will appear here';
+  const title = document.getElementById('input-title').value.trim() || 'Role / Title';
   const category = document.getElementById('input-category').value;
-  const bio = document.getElementById('input-bio').value.trim() || 'Public biography and context will appear here as you type.';
+  const bio = document.getElementById('input-bio').value.trim() || 'Your short bio will appear here...';
   const avatar = document.getElementById('input-avatar').value.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80';
 
   document.getElementById('preview-name').textContent = name;
@@ -205,51 +211,43 @@ function updatePreview() {
 async function handleCreateProfile(event) {
   event.preventDefault();
   const form = event.target;
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Publishing...';
+  const submitBtn = document.getElementById('submit-btn');
+  const originalText = submitBtn.innerHTML;
 
-  const payload = {
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = 'Submitting...';
+
+  const data = {
     name: form.name.value.trim(),
     title: form.title.value.trim(),
     category: form.category.value,
     bio: form.bio.value.trim(),
-    avatar_url: form.avatar_url.value.trim() || null,
-    external_url: form.external_url.value.trim() || null
+    avatar_url: form.avatar_url.value.trim() || undefined,
+    external_url: form.external_url.value.trim() || undefined
   };
 
   try {
     const res = await fetch('/api/profiles', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(data)
     });
 
     const result = await res.json();
     if (res.ok && result.success) {
-      showToast('Figure submitted! Awaiting administrator approval.', 'success');
-      form.reset();
-      btn.disabled = false;
-      btn.textContent = 'Submit Another Figure →';
-      const previewCard = document.querySelector('.tactile-card.shadow-xl');
-      if (previewCard) {
-        previewCard.innerHTML = `
-          <div class="text-center py-10 space-y-3">
-            <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xl flex items-center justify-center mx-auto">✓</div>
-            <h3 class="text-xl font-bold text-charcoal">Submission Received!</h3>
-            <p class="text-xs text-mineral max-w-xs mx-auto leading-relaxed">Thank you. This public figure has been placed in the editorial approval queue. Once verified by our moderation team, their permanent perception dossier will go live.</p>
-          </div>
-        `;
-      }
+      showToast('Profile submitted! Pending moderator approval.', 'success');
+      setTimeout(() => {
+        window.location.href = '/discover';
+      }, 1500);
     } else {
-      showToast(result.detail || result.message || 'Error creating profile.', 'error');
-      btn.disabled = false;
-      btn.textContent = 'Submit for Approval →';
+      showToast(result.detail || result.message || 'Submission failed.', 'error');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
     }
   } catch (err) {
-    showToast('Network error.', 'error');
-    btn.disabled = false;
-    btn.textContent = 'Submit for Approval →';
+    showToast('Network error. Please try again.', 'error');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalText;
   }
 }
 </script>

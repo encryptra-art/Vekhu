@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException, Header, Depends, Query, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, JSONResponse, Response, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response, RedirectResponse, FileResponse
 from pathlib import Path
 from typing import Optional
 
@@ -44,8 +44,13 @@ templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 
 # ============================================================================
-# SEO, SITEMAP & RSS FEED ENDPOINTS (Google Crawlers & Rich Indexing)
+# SEO, SITEMAP, FAVICON & RSS FEED ENDPOINTS
 # ============================================================================
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    """Direct route for browser root favicon requests."""
+    return FileResponse(BASE_DIR / "static" / "img" / "favicon.ico")
 
 @app.get("/robots.txt", response_class=Response)
 async def robots_txt():

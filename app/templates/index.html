@@ -1,40 +1,44 @@
 {% extends "base.html" %}
 
-{% block title %}VEKHU — See What The World Really Thinks | Public Perception Index{% endblock %}
-{% block meta_desc %}VEKHU is the world's real-time public perception index. Explore 5-star distribution curves, community reviews, and genuine sentiment around tech founders, creators, and thinkers.{% endblock %}
+{% block title %}VEKHU — See What People Really Think | Honest Reviews & Ratings{% endblock %}
+{% block meta_desc %}VEKHU is the honest community review platform. See real star ratings and honest reviews for creators, tech founders, and public figures.{% endblock %}
 {% block canonical_url %}https://vekhu.com/{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-6 pt-12 pb-24">
+<div class="max-w-7xl mx-auto px-6 pt-8 sm:pt-12 pb-24">
 
   <!-- ======================================================================
-       HERO COMPOSITION (Architectural, Sculptural, Tactile)
+       HERO COMPOSITION (Friendly, Warm Mascot + Clear Purpose)
        ====================================================================== -->
-  <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-28">
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-24 sm:mb-28">
     
-    <!-- Left Column: Editorial Statement & Direct Discovery -->
-    <div class="lg:col-span-7 space-y-8">
+    <!-- Left Column: Clear Purpose & Instant Search -->
+    <div class="lg:col-span-7 space-y-6 sm:space-y-8">
       
-      <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-sand/80 border border-charcoal/10 text-xs font-semibold text-mineral tracking-wide">
-        <span class="w-2 h-2 rounded-full bg-solar animate-pulse"></span>
-        <span>INDEXING 2026 CULTURAL & TECH DISCOURSE</span>
+      <!-- Friendly Vekhu Intro Pill -->
+      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sand border border-charcoal/10 text-xs font-semibold text-charcoal">
+        <img src="/static/img/mascot-avatar.png" alt="Vekhu" class="w-6 h-6 rounded-full object-cover">
+        <span>Meet Vekhu — The Honest Review Community</span>
       </div>
 
-      <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-charcoal leading-[1.08]">
-        What does the world <span class="font-editorial italic font-normal text-solar">really</span> think?
+      <!-- Main Headline: Simple & Understandable at First Glance -->
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-charcoal leading-[1.08]">
+        See what people <br class="hidden sm:inline">
+        <span class="font-editorial italic font-normal text-solar">really</span> think.
       </h1>
 
-      <p class="text-lg md:text-xl text-mineral leading-relaxed max-w-xl font-normal">
-        A structured, public perception ledger for the founders, creators, and thinkers who shape modern culture. Discover aggregate sentiment, read contextualized critiques, and record your honest perspective.
+      <!-- Subtitle in Plain Human Language -->
+      <p class="text-base sm:text-lg md:text-xl text-mineral leading-relaxed max-w-xl font-normal">
+        Real ratings and honest reviews for creators, tech founders, and public figures. No fake hype, no paid sponsors—just real opinions from real people.
       </p>
 
-      <!-- Instant Search Input -->
-      <form action="/discover" method="GET" class="flex flex-col sm:flex-row gap-3 max-w-lg pt-2">
+      <!-- Instant Search Form -->
+      <form action="/discover" method="GET" class="flex flex-col sm:flex-row gap-3 max-w-lg pt-1">
         <div class="relative flex-grow">
           <input 
             type="text" 
             name="q" 
-            placeholder="Search any founder, creator, or thinker..." 
+            placeholder="Search anyone (e.g. Sam Altman, MKBHD, Elon)..." 
             class="pill-input pl-12 pr-4 py-4 text-sm bg-white border-charcoal/15 shadow-sm"
           >
           <svg class="w-5 h-5 text-mineral absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,97 +46,106 @@
           </svg>
         </div>
         <button type="submit" class="pill-btn pill-btn-primary px-7 py-4 text-sm font-semibold">
-          Explore Index
+          Search
         </button>
       </form>
 
-      <!-- Quick Exploration Pills -->
-      <div class="flex flex-wrap items-center gap-2 pt-2 text-xs text-mineral">
-        <span class="font-semibold text-charcoal">Trending Now:</span>
+      <!-- Trending Figures Quick Links -->
+      <div class="flex flex-wrap items-center gap-2 pt-1 text-xs text-mineral">
+        <span class="font-semibold text-charcoal">Trending:</span>
         <a href="/profile/sam-altman" class="tag-capsule hover:border-charcoal/30">Sam Altman</a>
-        <a href="/profile/mkbhd" class="tag-capsule hover:border-charcoal/30">MKBHD</a>
+        <a href="/profile/mkbhd" class="tag-capsule hover:border-charcoal/30">Marques Brownlee</a>
         <a href="/profile/paul-graham" class="tag-capsule hover:border-charcoal/30">Paul Graham</a>
         <a href="/profile/lex-fridman" class="tag-capsule hover:border-charcoal/30">Lex Fridman</a>
       </div>
 
     </div>
 
-    <!-- Right Column: Sculptural Floating Interface Composition (Mirroring Reference Image) -->
+    <!-- Right Column: Mascot Showcase & Live Review Card -->
     <div class="lg:col-span-5 relative">
       
-      <!-- Ambient Glow Behind Floating Card -->
+      <!-- Ambient Glow Behind Hero Card -->
       <div class="absolute -inset-4 bg-gradient-to-tr from-solar/20 via-transparent to-stone/40 rounded-3xl filter blur-2xl -z-10"></div>
 
-      <!-- Main Visual Hero Artifact -->
-      <div class="tactile-card overflow-hidden bg-white/90 border border-charcoal/10 shadow-2xl relative">
+      <!-- Hero Card Container -->
+      <div class="tactile-card overflow-hidden bg-white/95 border border-charcoal/10 shadow-2xl relative">
         
-        <!-- Top Status Bar -->
-        <div class="p-6 pb-4 flex items-center justify-between border-b border-charcoal/5">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-solar"></span>
-            <span class="text-xs font-bold uppercase tracking-wider text-charcoal">Featured Dossier</span>
+        <!-- Mascot Visual Header Banner -->
+        <div class="bg-gradient-to-b from-sand to-sand/40 p-6 flex items-center gap-5 border-b border-charcoal/5 relative">
+          
+          <!-- Mascot Image -->
+          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shadow-md flex-shrink-0 bg-white border-2 border-white">
+            <img src="/static/img/mascot.png" alt="Vekhu Sloth Mascot" class="w-full h-full object-cover">
           </div>
-          <span class="text-xs text-mineral font-mono">LIVE CONSENSUS</span>
+
+          <!-- Friendly Speech Bubble from Vekhu -->
+          <div class="relative bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-charcoal/10 text-xs sm:text-sm text-charcoal">
+            <div class="font-bold text-solar mb-0.5 flex items-center gap-1.5">
+              <span>Vekhu says:</span>
+            </div>
+            <p class="leading-snug text-mineral">
+              "Take your time, see the whole picture, and leave an honest review!"
+            </p>
+          </div>
+
         </div>
 
-        <!-- Featured Figure Showcase: Marques Brownlee / Sam Altman -->
-        <div class="p-8 space-y-6">
+        <!-- Sample Live Community Rating Card (Featured Figure) -->
+        <div class="p-6 sm:p-7 space-y-5">
+          
           <div class="flex items-start justify-between">
             <div>
-              <span class="tag-capsule tag-capsule-solar mb-3">TECH & HARDWARE CRITICISM</span>
-              <h3 class="text-3xl font-display font-bold text-charcoal">Marques Brownlee</h3>
-              <p class="text-xs text-mineral mt-1">Creator & Founder, MKBHD Studio</p>
+              <span class="tag-capsule tag-capsule-solar mb-2 inline-block">TECH & MEDIA</span>
+              <h3 class="text-2xl font-bold text-charcoal">Marques Brownlee</h3>
+              <p class="text-xs text-mineral mt-0.5">Creator & Tech Reviewer (MKBHD)</p>
             </div>
-            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md flex-shrink-0">
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
               <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Marques Brownlee" class="w-full h-full object-cover">
             </div>
           </div>
 
-          <!-- Rating Metric Box with Geometric Disc -->
-          <div class="bg-sand/70 rounded-2xl p-6 relative overflow-hidden flex items-center justify-between">
-            <!-- Background Graphic Accent -->
-            <div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-solar/15 pointer-events-none"></div>
-
+          <!-- Rating Box -->
+          <div class="bg-sand/70 rounded-2xl p-5 flex items-center justify-between">
             <div>
-              <div class="text-4xl font-extrabold text-charcoal flex items-baseline gap-2">
+              <div class="text-3xl sm:text-4xl font-extrabold text-charcoal flex items-baseline gap-2">
                 <span>4.8</span>
-                <span class="text-solar text-2xl">★★★★★</span>
+                <span class="text-solar text-xl">★★★★★</span>
               </div>
               <div class="text-xs text-mineral font-medium mt-1">
-                98% positive sentiment across 350+ perspectives
+                98% positive reviews from the community
               </div>
             </div>
-
-            <div class="text-right z-10">
-              <span class="text-[10px] font-bold text-mineral uppercase tracking-wider block">Distribution</span>
-              <span class="text-xs font-semibold text-charcoal">Bimodal 5★ Heavy</span>
+            <div class="text-right">
+              <span class="text-[10px] font-bold text-mineral uppercase tracking-wider block">Community</span>
+              <span class="text-xs font-semibold text-charcoal">Top Rated</span>
             </div>
           </div>
 
-          <!-- Featured Quote Snippet -->
-          <blockquote class="italic text-sm text-charcoal/90 font-editorial border-l-2 border-solar pl-4 py-1 leading-relaxed">
-            "The gold standard of objective consumer hardware criticism. When Marques reviews a product, entire engineering roadmaps adjust."
+          <!-- Honest Community Quote -->
+          <blockquote class="text-xs sm:text-sm text-charcoal/90 italic border-l-2 border-solar pl-4 py-1 leading-relaxed bg-bone/50 rounded-r-xl">
+            "Honest tech reviews with no fluff. If a phone is bad, he tells it like it is."
           </blockquote>
 
-          <!-- Action Footer -->
-          <div class="flex items-center gap-3 pt-2">
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-3 pt-1">
             <a href="/profile/mkbhd" class="pill-btn pill-btn-primary flex-grow text-xs font-semibold text-center py-3">
-              View Full Dossier →
+              See All Reviews →
             </a>
             <a href="/profile/mkbhd#rate" class="pill-btn pill-btn-outline text-xs py-3 px-4">
-              Add Rating
+              Rate Now
             </a>
           </div>
+
         </div>
 
-        <!-- Dark Contrast Footer Panel (Echoing "New in C.Lab" in Reference) -->
-        <div class="bg-charcoal text-white px-8 py-5 flex items-center justify-between">
-          <div>
-            <div class="text-xs font-semibold text-white/70">Community Safeguard</div>
-            <div class="text-sm font-medium">Public Figure Doctrine Enforced</div>
+        <!-- Bottom Notice -->
+        <div class="bg-charcoal text-white px-6 py-4 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="text-white/80">Only for public figures & creators</span>
           </div>
-          <a href="/guidelines" class="text-xs text-solar hover:underline font-semibold flex items-center gap-1">
-            Read Policy →
+          <a href="/guidelines" class="text-solar hover:underline font-semibold">
+            Community Rules →
           </a>
         </div>
 
@@ -144,51 +157,51 @@
 
 
   <!-- ======================================================================
-       THE PERCEPTION REVOLUTION: 3 PHILOSOPHICAL PILLARS
+       HOW VEKHU WORKS (3 Simple, Clear Steps)
        ====================================================================== -->
-  <section class="mb-32">
-    <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
-      <h2 class="text-xs font-bold uppercase tracking-widest text-solar">Founding Principles</h2>
-      <p class="text-3xl sm:text-4xl font-bold text-charcoal tracking-tight">
-        Why traditional social networks fail at understanding reputation
-      </p>
+  <section class="mb-28">
+    <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+      <span class="text-xs font-bold uppercase tracking-widest text-solar">Simple & Honest</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-charcoal tracking-tight">
+        How VEKHU Works
+      </h2>
       <p class="text-sm text-mineral">
-        Comment sections reward outrage. VEKHU replaces chaotic noise with structured, multi-angle collective consensus.
+        Comment sections are full of noise. VEKHU makes it easy to see real ratings and honest feedback in one place.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
       
-      <!-- Pillar 1 -->
-      <div class="tactile-card p-8 bg-white/80 space-y-4 relative overflow-hidden group">
-        <div class="w-12 h-12 rounded-2xl bg-sand flex items-center justify-center text-charcoal font-bold text-xl group-hover:scale-105 transition-transform">
-          01
+      <!-- Step 1 -->
+      <div class="tactile-card p-8 bg-white/90 space-y-4 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-2xl bg-sand flex items-center justify-center text-solar text-2xl font-bold">
+          ★
         </div>
-        <h3 class="text-xl font-bold text-charcoal">The 5-Star Distribution Curve</h3>
+        <h3 class="text-xl font-bold text-charcoal">1. Real Star Ratings</h3>
         <p class="text-sm text-mineral leading-relaxed">
-          A single number hides reality. VEKHU plots the full mathematical histogram—revealing whether a thinker has unanimous admiration or polarizing controversy.
+          Rate anyone from 1 to 5 stars. See the true community score calculated from hundreds of real ratings.
         </p>
       </div>
 
-      <!-- Pillar 2 -->
-      <div class="tactile-card p-8 bg-white/80 space-y-4 relative overflow-hidden group">
-        <div class="w-12 h-12 rounded-2xl bg-solar-soft text-solar flex items-center justify-center font-bold text-xl group-hover:scale-105 transition-transform">
-          02
+      <!-- Step 2 -->
+      <div class="tactile-card p-8 bg-white/90 space-y-4 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-2xl bg-solar-soft flex items-center justify-center text-solar text-2xl font-bold">
+          💬
         </div>
-        <h3 class="text-xl font-bold text-charcoal">Perspective Context Tagging</h3>
+        <h3 class="text-xl font-bold text-charcoal">2. Honest Community Reviews</h3>
         <p class="text-sm text-mineral leading-relaxed">
-          Not all opinions carry the same lens. Reviewers tag whether they speak as a direct collaborator, an industry peer, or a critical observer, giving weight to nuance.
+          Read what followers, clients, and coworkers really think about their work, leadership, and public actions.
         </p>
       </div>
 
-      <!-- Pillar 3 -->
-      <div class="tactile-card p-8 bg-white/80 space-y-4 relative overflow-hidden group">
-        <div class="w-12 h-12 rounded-2xl bg-sand flex items-center justify-center text-charcoal font-bold text-xl group-hover:scale-105 transition-transform">
-          03
+      <!-- Step 3 -->
+      <div class="tactile-card p-8 bg-white/90 space-y-4 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-2xl bg-sand flex items-center justify-center text-charcoal text-2xl font-bold">
+          🔒
         </div>
-        <h3 class="text-xl font-bold text-charcoal">Zero-Friction Anonymous Candor</h3>
+        <h3 class="text-xl font-bold text-charcoal">3. Free & Anonymous</h3>
         <p class="text-sm text-mineral leading-relaxed">
-          Fear of social retaliation kills honest critique. VEKHU empowers instantaneous anonymous reviews, protected by server-side anti-bot duplicate prevention.
+          No sign up or account required. Share your genuine thoughts freely and fearlessly in under 30 seconds.
         </p>
       </div>
 
@@ -197,24 +210,24 @@
 
 
   <!-- ======================================================================
-       LIVE DOSSIERS DIRECTORY PREVIEW
+       POPULAR PROFILES (Clean Directory Preview)
        ====================================================================== -->
-  <section class="mb-28">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-6 border-b border-charcoal/10">
+  <section class="mb-24">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-4 border-b border-charcoal/10">
       <div>
-        <span class="text-xs font-bold uppercase tracking-wider text-solar">Live Ledger</span>
-        <h2 class="text-3xl font-bold text-charcoal tracking-tight mt-1">Featured Public Figures</h2>
+        <span class="text-xs font-bold uppercase tracking-wider text-solar">Directory</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-charcoal tracking-tight mt-1">Popular Public Figures</h2>
       </div>
       <a href="/discover" class="pill-btn pill-btn-outline text-xs font-semibold self-start sm:self-auto">
-        View All In Directory ({ profiles|length }) →
+        View All People ({% if profiles %}{{ profiles|length }}{% else %}0{% endif %}) →
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
       {% for profile in profiles %}
-      <div class="tactile-card p-7 flex flex-col justify-between bg-white relative">
+      <div class="tactile-card p-6 sm:p-7 flex flex-col justify-between bg-white hover:shadow-xl transition-all">
         <div>
-          <!-- Header -->
+          <!-- Header: Category & Rating -->
           <div class="flex items-start justify-between gap-4 mb-4">
             <span class="tag-capsule">{{ profile.category }}</span>
             <div class="flex items-center gap-1.5 text-xs font-bold text-charcoal bg-sand px-2.5 py-1 rounded-full">
@@ -224,13 +237,13 @@
             </div>
           </div>
 
-          <!-- Subject identity -->
+          <!-- Profile info -->
           <div class="flex items-center gap-4 mb-4">
             <div class="w-14 h-14 rounded-full overflow-hidden bg-sand border border-charcoal/10 flex-shrink-0">
               <img src="{{ profile.avatar_url }}" alt="{{ profile.name }}" class="w-full h-full object-cover">
             </div>
             <div>
-              <a href="/profile/{{ profile.slug }}" class="text-xl font-bold text-charcoal hover:text-solar transition-colors block">
+              <a href="/profile/{{ profile.slug }}" class="text-lg font-bold text-charcoal hover:text-solar transition-colors block">
                 {{ profile.name }}
               </a>
               <p class="text-xs text-mineral line-clamp-1 mt-0.5">{{ profile.title }}</p>
@@ -246,10 +259,10 @@
         <!-- Card Footer -->
         <div class="pt-4 border-t border-charcoal/5 flex items-center justify-between">
           <span class="text-[11px] text-mineral font-medium">
-            {{ profile.rating_count }} recorded perspectives
+            {{ profile.rating_count }} reviews
           </span>
           <a href="/profile/{{ profile.slug }}" class="text-xs font-bold text-charcoal hover:text-solar inline-flex items-center gap-1 transition-colors">
-            Explore Dossier →
+            See Reviews & Rate →
           </a>
         </div>
       </div>
@@ -261,27 +274,30 @@
   <!-- ======================================================================
        COMMUNITY CREATION CALL TO ACTION
        ====================================================================== -->
-  <section class="tactile-card-dark p-10 md:p-14 rounded-3xl relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
-    <div class="space-y-4 max-w-xl">
-      <span class="inline-block px-3 py-1 rounded-full bg-white/10 text-solar text-xs font-bold uppercase tracking-wider">
-        Decentralized Cultural Ledger
-      </span>
-      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">
-        Know a figure whose public perception should be recorded?
+  <section class="tactile-card-dark p-8 sm:p-12 md:p-14 rounded-3xl relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+    
+    <div class="space-y-3 max-w-xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-solar text-xs font-bold uppercase tracking-wider">
+        <img src="/static/img/mascot-avatar.png" alt="Vekhu" class="w-4 h-4 rounded-full">
+        <span>Anyone Can Add</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+        Can't find someone you want to rate?
       </h2>
-      <p class="text-sm text-white/70 leading-relaxed">
-        VEKHU indexes public-facing individuals who shape culture, technology, ideas, and media. Create a public profile in under 30 seconds.
+      <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+        You can add any public creator, founder, or public figure in less than a minute. Let others share their honest ratings.
       </p>
     </div>
 
-    <div class="flex flex-col sm:flex-row items-center gap-4">
-      <a href="/create" class="pill-btn pill-btn-solar text-sm font-semibold px-8 py-4 whitespace-nowrap">
-        + Add Public Figure
+    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full md:w-auto">
+      <a href="/create" class="pill-btn pill-btn-solar text-sm font-semibold px-8 py-4 whitespace-nowrap w-full sm:w-auto text-center">
+        + Add Someone New
       </a>
-      <a href="/guidelines" class="pill-btn bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-6 py-4 whitespace-nowrap">
-        Eligibility Rules
+      <a href="/guidelines" class="pill-btn bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-6 py-4 whitespace-nowrap w-full sm:w-auto text-center">
+        Community Rules
       </a>
     </div>
+
   </section>
 
 </div>
